@@ -1,8 +1,9 @@
-function Footer() {
-  const name = "Tuấn";
+function Footer(props) {
   return (
     <div>
-      <h1>Footer - {name}</h1>
+      <h1>
+        Footer - {props.name} - {props.children}
+      </h1>
     </div>
   );
 }

@@ -1,54 +1,41 @@
-const List = () => {
-  const productList = [
-    {
-      name: "Product 1",
-      price: "$100",
-      isNew: true,
-    },
-    {
-      name: "Product 2",
-      price: "$200",
-      isNew: false,
-    },
-    {
-      name: "Product 3",
-      price: "$300",
-      isNew: true,
-    },
-  ];
+import { useState } from "react";
+
+import Item from "./Item";
+
+const List = (props) => {
+  const { list } = props;
+
+  const [count, setCount] = useState(0);
+  const [text, setText] = useState("");
+
+  const handlePlusCount = () => {
+    // count = count + 1;
+    setCount(count + 1);
+  };
+
+  const handleMinusCount = () => {
+    // count = count - 1;
+    setCount(count - 1);
+  };
 
   const handleAddToCart = (name) => {
     console.log("handleAddToCart", name);
   };
 
-  const handleAddProduct = () => {
-    console.log("handleAddProduct");
-  };
-
   const handleChangeText = (e) => {
-    console.log("handleChangeText", {
-      name: e.target.name,
-      value: e.target.value,
-    });
-  };
-
-  const handleChangeSelect = (e) => {
-    console.log("handleChangeSelect", e.target.value);
+    setText(e.target.value);
   };
 
   const renderProductList = () => {
-    return productList.map((item, index) => {
+    return list.map((item, index) => {
       return (
-        <div key={index} style={{ border: "1px solid black" }}>
-          {item.isNew && (
-            <div>
-              <h3 style={{ color: "red" }}>New</h3>
-            </div>
-          )}
-          <h2>{item.name}</h2>
-          <h3>{item.price}</h3>
-          <button onClick={() => handleAddToCart(item.name)}>Mua</button>
-        </div>
+        <Item
+          key={index}
+          handleAddToCart={handleAddToCart}
+          name={item.name}
+          price={item.price}
+          isNew={item.isNew}
+        />
       );
     });
   };
@@ -56,12 +43,13 @@ const List = () => {
   return (
     <>
       <div>List</div>
-      <button onClick={() => handleAddProduct()}>Add product</button>
+      <div>
+        <button onClick={() => handleMinusCount()}>-</button>
+        <span>{count}</span>
+        <button onClick={() => handlePlusCount()}>+</button>
+      </div>
       <input type="text" name="search" onChange={(e) => handleChangeText(e)} />
-      <select onChange={(e) => handleChangeSelect(e)}>
-        <option value="1">1</option>
-        <option value="2">2</option>
-      </select>
+      <div>Text: {text}</div>
       {renderProductList()}
     </>
   );

@@ -1,33 +1,56 @@
-import logo from "./logo.svg";
+import { useState } from "react";
+
 import "./App.css";
 
-import Header from "./Header";
+import Header, { name, age } from "./Header";
 import Footer from "./Footer";
 import List from "./List";
 
 function App() {
-  const arr = [
+  const [productList, setProductList] = useState([
     {
-      name: "A",
+      name: "Product 1",
+      price: "$100",
+      isNew: true,
     },
     {
-      name: "B",
+      name: "Product 2",
+      price: "$200",
+      isNew: false,
     },
-  ];
-  const newArr = arr.map((item, index) => {
-    return {
-      name: `${item.name}${index + 1}`,
-      index: index + 1,
+    {
+      name: "Product 3",
+      price: "$300",
+      isNew: true,
+    },
+  ]);
+  const name = "Tuấn";
+  const age = 20;
+
+  const handleAddProduct = () => {
+    const newProduct = {
+      name: "Product 4",
+      price: "$400",
+      isNew: true,
     };
-  });
-  console.log("🚀 ~ file: App.js ~ line 22 ~ newArr ~ newArr", newArr);
+    const newProductList = [...productList, newProduct];
+    console.log(
+      "🚀 ~ file: App.js ~ line 37 ~ handleAddProduct ~ newProductList",
+      newProductList
+    );
+    setProductList(newProductList);
+  };
+
   return (
     <div className="App">
       <header className="App-header">
-        <Header />
+        <Header name={name} age={age} />
       </header>
-      <List />
-      <Footer />
+      <List list={productList} />
+      <button onClick={() => handleAddProduct()}>Add Product</button>
+      <Footer name={name} age={age} text>
+        ABC
+      </Footer>
     </div>
   );
 }
