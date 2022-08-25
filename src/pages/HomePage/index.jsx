@@ -1,8 +1,8 @@
 import { useState } from "react";
 
-import Item from "./Item";
+import Item from "../../Item";
 
-const List = (props) => {
+const HomePage = (props) => {
   const { list } = props;
 
   const [count, setCount] = useState(0);
@@ -42,17 +42,18 @@ const List = (props) => {
 
   return (
     <>
-      <div>List</div>
+      <div>Danh sách sản phẩm</div>
       <div>
-        <button onClick={() => handleMinusCount()}>-</button>
-        <span>{count}</span>
-        <button onClick={() => handlePlusCount()}>+</button>
+        <span>Tìm kiếm:</span>
+        <input
+          type="text"
+          name="search"
+          onChange={(e) => handleChangeText(e)}
+        />
       </div>
-      <input type="text" name="search" onChange={(e) => handleChangeText(e)} />
-      <div>Text: {text}</div>
       {renderProductList()}
     </>
   );
 };
 
-export default List;
+export default HomePage;

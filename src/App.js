@@ -1,10 +1,12 @@
 import { useState } from "react";
 
-import "./App.css";
+import Header from "./layouts/Header";
+import Sidebar from "./layouts/Sidebar";
+import Footer from "./layouts/Footer";
+import HomePage from "./pages/HomePage";
 
-import Header, { name, age } from "./Header";
-import Footer from "./Footer";
-import List from "./List";
+import styles from "./App.module.css";
+import * as S from "./styles";
 
 function App() {
   const [productList, setProductList] = useState([
@@ -24,6 +26,7 @@ function App() {
       isNew: true,
     },
   ]);
+  const [isShowSidebar, setIsShowSidebar] = useState(true);
   const name = "Tuấn";
   const age = 20;
 
@@ -34,20 +37,23 @@ function App() {
       isNew: true,
     };
     const newProductList = [...productList, newProduct];
-    console.log(
-      "🚀 ~ file: App.js ~ line 37 ~ handleAddProduct ~ newProductList",
-      newProductList
-    );
     setProductList(newProductList);
   };
 
   return (
-    <div className="App">
-      <header className="App-header">
-        <Header name={name} age={age} />
-      </header>
-      <List list={productList} />
-      <button onClick={() => handleAddProduct()}>Add Product</button>
+    <div className={styles.globalContainer}>
+      <Header
+        name={name}
+        isShowSidebar={isShowSidebar}
+        setIsShowSidebar={setIsShowSidebar}
+      />
+      <S.MainContainer>
+        <Sidebar isShowSidebar={isShowSidebar} />
+        <S.MainContent isShowSidebar={isShowSidebar}>
+          <HomePage list={productList} />
+          <button onClick={() => handleAddProduct()}>Add Product</button>
+        </S.MainContent>
+      </S.MainContainer>
       <Footer name={name} age={age} text>
         ABC
       </Footer>
