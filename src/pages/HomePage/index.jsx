@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Button, Checkbox, Form, Input, InputNumber } from "antd";
 
 import Item from "../../Item";
 
@@ -53,35 +54,42 @@ const HomePage = (props) => {
     });
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    const { productName, price, content } = productForm;
-    const newProductErrors = { ...productErrors };
+  // const handleSubmit = (e) => {
+  //   e.preventDefault();
+  //   const { productName, price, content } = productForm;
+  //   const newProductErrors = { ...productErrors };
 
-    let isValid = true;
+  //   let isValid = true;
 
-    if (!productName) {
-      newProductErrors.productName = "Bạn cần nhập tên sản phẩm!";
-      isValid = false;
-    } else {
-      newProductErrors.productName = "";
-    }
+  //   if (!productName) {
+  //     newProductErrors.productName = "Bạn cần nhập tên sản phẩm!";
+  //     isValid = false;
+  //   } else {
+  //     newProductErrors.productName = "";
+  //   }
 
-    if (!price) {
-      newProductErrors.price = "Bạn cần nhập giá sản phẩm!";
-      isValid = false;
-    }
+  //   if (!price) {
+  //     newProductErrors.price = "Bạn cần nhập giá sản phẩm!";
+  //     isValid = false;
+  //   }
 
-    if (!content) {
-      newProductErrors.content = "Bạn cần nhập nội dung sản phẩm!";
-      isValid = false;
-    }
+  //   if (!content) {
+  //     newProductErrors.content = "Bạn cần nhập nội dung sản phẩm!";
+  //     isValid = false;
+  //   }
 
-    if (isValid) {
-      // Submit
-    } else {
-      setProductErrors(newProductErrors);
-    }
+  //   if (isValid) {
+  //     // Submit
+  //   } else {
+  //     setProductErrors(newProductErrors);
+  //   }
+  // };
+
+  const handleSubmit = (values) => {
+    console.log(
+      "🚀 ~ file: index.jsx ~ line 89 ~ handleSubmit ~ values",
+      values
+    );
   };
 
   const renderProductList = () => {
@@ -100,59 +108,66 @@ const HomePage = (props) => {
 
   return (
     <>
+      <Button type="primary">Ahihi</Button>
       <div>Danh sách sản phẩm</div>
-      <form style={{ border: "1px solid black", padding: 12 }}>
-        <div>
-          <label>Tên sản phẩm: </label>
-          <input
-            type="text"
-            name="productName"
-            onChange={(e) => handleChangeField(e)}
+      <Form
+        name="createProduct"
+        layout="vertical"
+        onFinish={(values) => handleSubmit(values)}
+      >
+        <Form.Item
+          label="Tên sản phẩm"
+          name="productName"
+          rules={[
+            {
+              required: true,
+              message: "Bạn cần nhập tên sản phẩm!",
+            },
+            {
+              type: "string",
+              min: 4,
+              message: "Tên sản phẩm phải lớn hơn 4 kí tự!",
+            },
+          ]}
+        >
+          <Input />
+        </Form.Item>
+        <Form.Item
+          label="Giá"
+          name="price"
+          rules={[
+            {
+              required: true,
+              message: "Bạn cần nhập tên sản phẩm!",
+            },
+            {
+              type: "number",
+              min: 100000,
+              message: "Giá sản phẩm phải lớn hơn 100.000!",
+            },
+          ]}
+        >
+          <InputNumber />
+        </Form.Item>
+        <Form.Item label="Nội dung" name="content">
+          <Input.TextArea
+            autoSize={{
+              minRows: 2,
+              maxRows: 6,
+            }}
           />
-        </div>
-        <span>{productErrors.productName}</span>
-        <div>
-          <label>Giá: </label>
-          <input
-            type="number"
-            name="price"
-            onChange={(e) => handleChangeField(e)}
-          />
-        </div>
-        <span>{productErrors.price}</span>
-        <div>
-          <label>Nội dung: </label>
-          <textarea name="content" onChange={(e) => handleChangeField(e)} />
-        </div>
-        <span>{productErrors.content}</span>
-        <div>
-          <input
-            type="checkbox"
-            name="isNew"
-            id="isNew"
-            onChange={(e) => handleChangeIsNew(e)}
-          />
-          <label htmlFor="isNew">Sản phẩm mới</label>
-        </div>
-        <div>
-          <label>Tùy chọn: </label>
-          <input
-            type="checkbox"
-            name="options"
-            value="1"
-            onChange={(e) => handleChangeOption(e)}
-          />
-          Tùy chọn 1
-          <input
-            type="checkbox"
-            name="options"
-            value="2"
-            onChange={(e) => handleChangeOption(e)}
-          />
-          Tùy chọn 2
-        </div>
-        <button onClick={(e) => handleSubmit(e)}>Tạo sản phẩm</button>
-      </form>
+        </Form.Item>
+        <Form.Item name="isNew" valuePropName="checked">
+          <Checkbox>Sản phẩm mới</Checkbox>
+        </Form.Item>
+        <Form.Item label="Tùy chọn" name="options">
+          <Checkbox.Group>
+            <Checkbox value="1">Tùy chọn 1</Checkbox>
+            <Checkbox value="2">Tùy chọn 2</Checkbox>
+          </Checkbox.Group>
+        </Form.Item>
+        <Button htmlType="submit">Thêm sản phẩm</Button>
+      </Form>
       <div>
         <span>Tìm kiếm:</span>
         <input type="text" name="search" />
