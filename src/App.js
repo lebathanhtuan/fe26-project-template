@@ -27,6 +27,7 @@ function App() {
     },
   ]);
   const [isShowSidebar, setIsShowSidebar] = useState(true);
+  const [isShowDrawer, setIsShowDrawer] = useState(false);
   const name = "Tuấn";
   const age = 20;
 
@@ -46,6 +47,8 @@ function App() {
         name={name}
         isShowSidebar={isShowSidebar}
         setIsShowSidebar={setIsShowSidebar}
+        isShowDrawer={isShowDrawer}
+        setIsShowDrawer={setIsShowDrawer}
       />
       <S.MainContainer>
         <Sidebar isShowSidebar={isShowSidebar} />
@@ -53,6 +56,11 @@ function App() {
           <HomePage list={productList} />
           <button onClick={() => handleAddProduct()}>Add Product</button>
         </S.MainContent>
+        <S.DrawerOverlay
+          isShowDrawer={isShowDrawer}
+          onClick={() => setIsShowDrawer(false)}
+        />
+        <S.DrawerContainer isShowDrawer={isShowDrawer}>ABC</S.DrawerContainer>
       </S.MainContainer>
       <Footer name={name} age={age} text>
         ABC

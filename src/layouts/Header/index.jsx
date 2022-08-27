@@ -3,7 +3,13 @@ import * as S from "./styles";
 
 export default function Header(props) {
   const [theme, setTheme] = useState("dark");
-  const { name, isShowSidebar, setIsShowSidebar } = props;
+  const {
+    name,
+    isShowSidebar,
+    setIsShowSidebar,
+    isShowDrawer,
+    setIsShowDrawer,
+  } = props;
   return (
     <S.HeaderContainer theme={theme}>
       <S.HeaderLogo>
@@ -16,7 +22,12 @@ export default function Header(props) {
       <button onClick={() => setTheme(theme === "dark" ? "light" : "dark")}>
         Đổi theme
       </button>
-      <h2>{name}</h2>
+      <S.HeaderAccount>
+        <h2>{name}</h2>
+        <button onClick={() => setIsShowDrawer(!isShowDrawer)}>
+          Mở/Đóng Drawer
+        </button>
+      </S.HeaderAccount>
     </S.HeaderContainer>
   );
 }

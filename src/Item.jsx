@@ -2,7 +2,6 @@ import { useState } from "react";
 
 function Item(props) {
   const [selected, setSelected] = useState(false);
-  console.log("🚀 ~ file: Item.jsx ~ line 5 ~ Item ~ selected", selected);
   const { name, price, isNew, handleAddToCart } = props;
 
   // const handleSelectProduct = () => {

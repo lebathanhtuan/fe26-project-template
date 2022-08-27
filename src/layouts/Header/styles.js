@@ -29,3 +29,8 @@ export const HeaderLogo = styled.div`
   display: flex;
   align-items: center;
 `;
+
+export const HeaderAccount = styled.div`
+  display: flex;
+  align-items: center;
+`;
