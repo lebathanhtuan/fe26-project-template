@@ -1,33 +1,24 @@
-import { useState } from "react";
+import { Button, Space } from "antd";
 import * as S from "./styles";
 
 export default function Header(props) {
-  const [theme, setTheme] = useState("dark");
-  const {
-    name,
-    isShowSidebar,
-    setIsShowSidebar,
-    isShowDrawer,
-    setIsShowDrawer,
-  } = props;
+  const { isShowSidebar, setIsShowSidebar, isShowDrawer, setIsShowDrawer } =
+    props;
+  const name = "Tuấn";
   return (
-    <S.HeaderContainer theme={theme}>
-      <S.HeaderLogo>
-        <button onClick={() => setIsShowSidebar(!isShowSidebar)}>
+    <S.HeaderContainer>
+      <Space>
+        <Button onClick={() => setIsShowSidebar(!isShowSidebar)}>
           Mở/Đóng Sidebar
-        </button>
+        </Button>
         <h2 className="logo">Header</h2>
-      </S.HeaderLogo>
-
-      <button onClick={() => setTheme(theme === "dark" ? "light" : "dark")}>
-        Đổi theme
-      </button>
-      <S.HeaderAccount>
+      </Space>
+      <Space>
         <h2>{name}</h2>
-        <button onClick={() => setIsShowDrawer(!isShowDrawer)}>
+        <Button onClick={() => setIsShowDrawer(!isShowDrawer)}>
           Mở/Đóng Drawer
-        </button>
-      </S.HeaderAccount>
+        </Button>
+      </Space>
     </S.HeaderContainer>
   );
 }

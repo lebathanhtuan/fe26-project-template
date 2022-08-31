@@ -8,6 +8,7 @@ export const MainContainer = styled.div`
 
 export const MainContent = styled.div`
   margin-left: 0px;
+  padding: 16px;
   width: 100%;
   transition: all 0.3s;
 
@@ -34,6 +35,7 @@ export const DrawerContainer = styled.div`
   position: fixed;
   top: 0;
   right: ${(props) => (props.isShowDrawer ? "0px" : "-200px")};
+  padding: 16px;
   width: 200px;
   height: 100vh;
   background-color: #08979c;

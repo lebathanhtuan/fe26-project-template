@@ -4,7 +4,7 @@ function Sidebar(props) {
   const { isShowSidebar } = props;
   return (
     <S.SidebarContainer isShowSidebar={isShowSidebar}>
-      Sidebar Sidebar Sidebar Sidebar Sidebar
+      Sidebar content
     </S.SidebarContainer>
   );
 }
