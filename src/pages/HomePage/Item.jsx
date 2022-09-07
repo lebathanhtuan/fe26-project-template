@@ -1,8 +1,11 @@
 import { useState } from "react";
 import { Button, Form, Card, Space, Input, InputNumber, Checkbox } from "antd";
+import { Link, useNavigate } from "react-router-dom";
 
 function Item(props) {
   const [isUpdate, setIsUpdate] = useState(false);
+
+  let navigate = useNavigate();
 
   const [updateForm] = Form.useForm();
 
@@ -91,6 +94,7 @@ function Item(props) {
             Sửa
           </Button>
         )}
+        <Button onClick={() => navigate(`/product/${id}`)}>Chi tiết</Button>
         <Button danger onClick={() => handleDeleteProduct(id)}>
           Xóa
         </Button>

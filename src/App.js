@@ -1,10 +1,13 @@
 import { useState } from "react";
 import { v4 as uuidv4 } from "uuid";
+import { Routes, Route } from "react-router-dom";
 
-import Header from "./layouts/Header";
-import Sidebar from "./layouts/Sidebar";
-import Footer from "./layouts/Footer";
+import AdminLayout from "./layouts/AdminLayout";
+import LoginLayout from "./layouts/LoginLayout";
 import HomePage from "./pages/HomePage";
+import AboutPage from "./pages/AboutPage";
+import ProductDetailPage from "./pages/ProductDetailPage";
+import LoginPage from "./pages/LoginPage";
 
 import styles from "./App.module.css";
 import * as S from "./styles";
@@ -41,31 +44,27 @@ function App() {
 
   return (
     <div className={styles.globalContainer}>
-      <Header
-        isShowSidebar={isShowSidebar}
-        setIsShowSidebar={setIsShowSidebar}
-        isShowDrawer={isShowDrawer}
-        setIsShowDrawer={setIsShowDrawer}
-      />
-      <S.MainContainer>
-        <Sidebar isShowSidebar={isShowSidebar} />
-        <S.MainContent isShowSidebar={isShowSidebar}>
-          <HomePage
-            productList={productList}
-            handleCreateProduct={handleCreateProduct}
-            handleUpdateProduct={handleUpdateProduct}
-            handleDeleteProduct={handleDeleteProduct}
+      <Routes>
+        <Route element={<AdminLayout />}>
+          <Route
+            path="/"
+            element={
+              <HomePage
+                productList={productList}
+                handleCreateProduct={handleCreateProduct}
+                handleUpdateProduct={handleUpdateProduct}
+                handleDeleteProduct={handleDeleteProduct}
+              />
+            }
           />
-        </S.MainContent>
-        <S.DrawerOverlay
-          isShowDrawer={isShowDrawer}
-          onClick={() => setIsShowDrawer(false)}
-        />
-        <S.DrawerContainer isShowDrawer={isShowDrawer}>
-          Drawer content
-        </S.DrawerContainer>
-      </S.MainContainer>
-      <Footer />
+          <Route path="/about" element={<AboutPage />} />
+          <Route path="/product/:id" element={<ProductDetailPage />} />
+        </Route>
+        <Route element={<LoginLayout />}>
+          <Route path="/login" element={<LoginPage />} />
+          {/* <Route path="/register" element={<Register />} /> */}
+        </Route>
+      </Routes>
     </div>
   );
 }

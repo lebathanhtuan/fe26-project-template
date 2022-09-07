@@ -1,6 +1,6 @@
 import { Button, Checkbox, Form, Input, InputNumber, Card } from "antd";
 
-import Item from "../../Item";
+import Item from "./Item";
 
 const HomePage = (props) => {
   const {
