@@ -1,9 +1,14 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
 import { Button, Form, Card, Space, Input, InputNumber, Checkbox } from "antd";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+
+import { AppContext } from "../../App";
 
 function Item(props) {
   const [isUpdate, setIsUpdate] = useState(false);
+
+  const data = useContext(AppContext);
+  console.log("🚀 ~ file: Item.jsx ~ line 11 ~ Item ~ data", data);
 
   let navigate = useNavigate();
 
