@@ -15,56 +15,19 @@ import * as S from "./styles";
 export const AppContext = createContext();
 
 function App() {
-  const [productList, setProductList] = useState([]);
   const [theme, setTheme] = useState("light");
-
-  const handleCreateProduct = (values) => {
-    const newProduct = {
-      ...values,
-      id: uuidv4(),
-    };
-    const newProductList = [newProduct, ...productList];
-    setProductList(newProductList);
-  };
-
-  const handleUpdateProduct = (values, id) => {
-    const newProductList = [...productList];
-    const newProduct = {
-      ...values,
-      id: id,
-    };
-    const index = productList.findIndex((item) => item.id === id);
-    newProductList.splice(index, 1, newProduct);
-    setProductList(newProductList);
-  };
-
-  const handleDeleteProduct = (id) => {
-    const newProductList = productList.filter((item) => item.id !== id);
-    setProductList(newProductList);
-  };
 
   return (
     <AppContext.Provider
       value={{
         theme: theme,
         name: "Tuấn",
-        productList: productList,
       }}
     >
       <div className={styles.globalContainer}>
         <Routes>
           <Route element={<AdminLayout />}>
-            <Route
-              path="/"
-              element={
-                <HomePage
-                  productList={productList}
-                  handleCreateProduct={handleCreateProduct}
-                  handleUpdateProduct={handleUpdateProduct}
-                  handleDeleteProduct={handleDeleteProduct}
-                />
-              }
-            />
+            <Route path="/" element={<HomePage />} />
             <Route path="/about" element={<AboutPage />} />
             <Route path="/product/:id" element={<ProductDetailPage />} />
           </Route>

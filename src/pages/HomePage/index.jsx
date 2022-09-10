@@ -1,14 +1,29 @@
 import { Button, Checkbox, Form, Input, InputNumber, Card } from "antd";
+import { useSelector, useDispatch } from "react-redux";
+
+import {
+  createProductAction,
+  updateProductAction,
+  deleteProductAction,
+} from "../../redux/actions";
 
 import Item from "./Item";
 
-const HomePage = (props) => {
-  const {
-    productList,
-    handleCreateProduct,
-    handleUpdateProduct,
-    handleDeleteProduct,
-  } = props;
+const HomePage = () => {
+  const dispatch = useDispatch();
+  const { productList } = useSelector((state) => state.product);
+
+  const handleCreateProduct = (values) => {
+    dispatch(createProductAction({ values: values }));
+  };
+
+  const handleUpdateProduct = (values, id) => {
+    dispatch(updateProductAction({ values: values, id: id }));
+  };
+
+  const handleDeleteProduct = (id) => {
+    dispatch(deleteProductAction({ id: id }));
+  };
 
   const renderProductList = () => {
     return productList.map((item, index) => {
