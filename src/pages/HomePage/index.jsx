@@ -1,7 +1,10 @@
-import { Button, Checkbox, Form, Input, InputNumber, Card } from "antd";
+import { useEffect } from "react";
+import { Button, Checkbox, Form, Input, InputNumber, Card, Select } from "antd";
 import { useSelector, useDispatch } from "react-redux";
 
 import {
+  getProductListAction,
+  getCategoryListAction,
   createProductAction,
   updateProductAction,
   deleteProductAction,
@@ -11,14 +14,34 @@ import Item from "./Item";
 
 const HomePage = () => {
   const dispatch = useDispatch();
-  const { productList } = useSelector((state) => state.product);
+  const { productList, createProductData } = useSelector(
+    (state) => state.product
+  );
+  const { categoryList } = useSelector((state) => state.category);
+
+  useEffect(() => {
+    dispatch(getProductListAction());
+    dispatch(getCategoryListAction());
+  }, []);
 
   const handleCreateProduct = (values) => {
-    dispatch(createProductAction({ values: values }));
+    dispatch(
+      createProductAction({
+        values: { ...values, categoryId: parseInt(values.categoryId) },
+      })
+    );
   };
 
   const handleUpdateProduct = (values, id) => {
-    dispatch(updateProductAction({ values: values, id: id }));
+    dispatch(
+      updateProductAction({
+        values: {
+          ...values,
+          categoryId: parseInt(values.categoryId),
+        },
+        id: id,
+      })
+    );
   };
 
   const handleDeleteProduct = (id) => {
@@ -26,17 +49,30 @@ const HomePage = () => {
   };
 
   const renderProductList = () => {
-    return productList.map((item, index) => {
+    if (productList.loading) return <div>Loading...</div>;
+    return productList.data.map((item, index) => {
       return (
         <Item
           key={item.id}
           id={item.id}
           name={item.name}
           price={item.price}
-          isNew={item.isNew}
+          category={item.category}
+          categoryId={item.categoryId}
+          categoryList={categoryList}
           handleUpdateProduct={handleUpdateProduct}
           handleDeleteProduct={handleDeleteProduct}
         />
+      );
+    });
+  };
+
+  const renderCategoryOptions = () => {
+    return categoryList.data.map((item, index) => {
+      return (
+        <Select.Option key={item.id} values={item.id}>
+          {item.name}
+        </Select.Option>
       );
     });
   };
@@ -83,10 +119,26 @@ const HomePage = () => {
           >
             <InputNumber style={{ width: "100%" }} />
           </Form.Item>
-          <Form.Item name="isNew" valuePropName="checked">
-            <Checkbox>Sản phẩm mới</Checkbox>
+          <Form.Item
+            label="Hãng"
+            name="categoryId"
+            rules={[
+              {
+                required: true,
+                message: "Bạn cần chọn hãng!",
+              },
+            ]}
+          >
+            <Select loading={categoryList.loading}>
+              {renderCategoryOptions()}
+            </Select>
           </Form.Item>
-          <Button type="primary" htmlType="submit" block>
+          <Button
+            type="primary"
+            htmlType="submit"
+            block
+            loading={createProductData.loading}
+          >
             Thêm sản phẩm
           </Button>
         </Form>

@@ -1,30 +1,40 @@
-import { useState, useContext } from "react";
-import { Button, Form, Card, Space, Input, InputNumber, Checkbox } from "antd";
+import { useState } from "react";
+import { Button, Form, Card, Space, Input, InputNumber, Select } from "antd";
 import { useNavigate } from "react-router-dom";
 
-import { AppContext } from "../../App";
-
-function Item(props) {
+function Item({
+  name,
+  price,
+  categoryId,
+  category,
+  id,
+  categoryList,
+  handleUpdateProduct,
+  handleDeleteProduct,
+}) {
   const [isUpdate, setIsUpdate] = useState(false);
-
-  const data = useContext(AppContext);
-  console.log("🚀 ~ file: Item.jsx ~ line 11 ~ Item ~ data", data);
 
   let navigate = useNavigate();
 
   const [updateForm] = Form.useForm();
 
-  const { name, price, isNew, id, handleUpdateProduct, handleDeleteProduct } =
-    props;
+  const renderCategoryOptions = () => {
+    return categoryList.data.map((item, index) => {
+      return (
+        <Select.Option key={item.id} values={item.id}>
+          {item.name}
+        </Select.Option>
+      );
+    });
+  };
 
   const renderProductContent = () => {
     if (!isUpdate) {
       return (
         <>
-          <h3>
-            Tên: {name} {isNew && "[Mới]"}
-          </h3>
+          <h3>Tên: {name}</h3>
           <h4>Giá: {price.toLocaleString()} VND</h4>
+          <h4>Hãng: {category.name}</h4>
         </>
       );
     }
@@ -35,7 +45,7 @@ function Item(props) {
         initialValues={{
           name: name,
           price: price,
-          isNew: isNew,
+          categoryId: categoryId.toString(),
         }}
         onFinish={(values) => {
           handleUpdateProduct(values, id);
@@ -76,8 +86,19 @@ function Item(props) {
         >
           <InputNumber style={{ width: "100%" }} />
         </Form.Item>
-        <Form.Item name="isNew" valuePropName="checked">
-          <Checkbox>Sản phẩm mới</Checkbox>
+        <Form.Item
+          label="Hãng"
+          name="categoryId"
+          rules={[
+            {
+              required: true,
+              message: "Bạn cần chọn hãng!",
+            },
+          ]}
+        >
+          <Select loading={categoryList.loading}>
+            {renderCategoryOptions()}
+          </Select>
         </Form.Item>
       </Form>
     );
