@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Button, Form, Card, Space, Input, InputNumber, Select } from "antd";
 import { useNavigate } from "react-router-dom";
+import propTypes from "prop-types";
 
 function Item({
   name,
@@ -128,5 +129,24 @@ function Item({
     </Card>
   );
 }
+
+Item.propTypes = {
+  name: propTypes.string,
+  price: propTypes.number,
+  categoryId: propTypes.number,
+  category: propTypes.shape({
+    id: propTypes.number,
+    name: propTypes.string,
+  }),
+  id: propTypes.number,
+  categoryList: propTypes.arrayOf(
+    propTypes.shape({
+      id: propTypes.number,
+      name: propTypes.string,
+    })
+  ),
+  handleUpdateProduct: propTypes.func,
+  handleDeleteProduct: propTypes.func,
+};
 
 export default Item;
