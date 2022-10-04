@@ -7,7 +7,7 @@ import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import { store } from "./store";
 
-import "antd/dist/antd.css";
+import "antd/dist/antd.less";
 import "./index.css";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
