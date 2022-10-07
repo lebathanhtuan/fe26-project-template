@@ -1,6 +1,7 @@
-import { useState, createContext } from "react";
-import { v4 as uuidv4 } from "uuid";
+import { useEffect } from "react";
 import { Routes, Route } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import jwtDecode from "jwt-decode";
 
 import AdminLayout from "./layouts/AdminLayout";
 import LoginLayout from "./layouts/LoginLayout";
@@ -8,36 +9,41 @@ import HomePage from "./pages/HomePage";
 import AboutPage from "./pages/AboutPage";
 import ProductDetailPage from "./pages/ProductDetailPage";
 import LoginPage from "./pages/LoginPage";
+import RegisterPage from "./pages/RegisterPage";
+
+import { ROUTES } from "./constants/routes";
+import { getUserInfoAction } from "./redux/actions";
 
 import styles from "./App.module.css";
 import * as S from "./styles";
 
-export const AppContext = createContext();
-
 function App() {
-  const [theme, setTheme] = useState("light");
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    const accessToken = localStorage.getItem("accessToken");
+    if (accessToken) {
+      const decodeInfo = jwtDecode(accessToken);
+      dispatch(getUserInfoAction({ id: decodeInfo.sub }));
+    }
+  }, []);
 
   return (
-    <AppContext.Provider
-      value={{
-        theme: theme,
-        name: "Tuấn",
-      }}
-    >
-      <div className={styles.globalContainer}>
-        <Routes>
-          <Route element={<AdminLayout />}>
-            <Route path="/" element={<HomePage />} />
-            <Route path="/about" element={<AboutPage />} />
-            <Route path="/product/:id" element={<ProductDetailPage />} />
-          </Route>
-          <Route element={<LoginLayout />}>
-            <Route path="/login" element={<LoginPage />} />
-            {/* <Route path="/register" element={<Register />} /> */}
-          </Route>
-        </Routes>
-      </div>
-    </AppContext.Provider>
+    <div className={styles.globalContainer}>
+      <Routes>
+        <Route element={<AdminLayout />}>
+          <Route path={ROUTES.ADMIN.DASHBOARD} element={<div>Dashboard</div>} />
+          <Route path={ROUTES.ADMIN.PRODUCT_LIST} element={<HomePage />} />
+          <Route path="/product/:id" element={<ProductDetailPage />} />
+        </Route>
+        {/* <Route path="/about" element={<AboutPage />} /> */}
+        {/* <Route path="/" element={<HomePage />} /> */}
+        <Route element={<LoginLayout />}>
+          <Route path={ROUTES.LOGIN} element={<LoginPage />} />
+          <Route path={ROUTES.REGISTER} element={<RegisterPage />} />
+        </Route>
+      </Routes>
+    </div>
   );
 }
 

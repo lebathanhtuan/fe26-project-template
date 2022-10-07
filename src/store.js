@@ -1,6 +1,7 @@
 import { configureStore } from "@reduxjs/toolkit";
 import createSagaMiddleware from "redux-saga";
 
+import userReducer from "./redux/reducers/user.reducer";
 import productReducer from "./redux/reducers/product.reducer";
 import categoryReducer from "./redux/reducers/category.reducer";
 
@@ -10,7 +11,7 @@ const sagaMiddleware = createSagaMiddleware();
 
 const store = configureStore({
   reducer: {
-    // user: userReducer,
+    user: userReducer,
     product: productReducer,
     category: categoryReducer,
   },
