@@ -1,5 +1,7 @@
 import { Button } from "antd";
 import { useLocation, useNavigate } from "react-router-dom";
+
+import { SIDEBAR_ITEMS } from "./constants";
 import * as S from "./styles";
 
 function Sidebar(props) {
@@ -7,15 +9,24 @@ function Sidebar(props) {
   const { pathname } = useLocation();
   const navigate = useNavigate();
 
+  const renderSidebarItems = () => {
+    return SIDEBAR_ITEMS.map((item, index) => {
+      return (
+        <S.SidebarItem
+          key={index}
+          to={item.path}
+          active={pathname === item.path}
+        >
+          {item.title}
+        </S.SidebarItem>
+      );
+    });
+  };
+
   return (
     <S.SidebarContainer isShowSidebar={isShowSidebar}>
       <S.SidebarContent>
-        <S.SidebarItem to="/" active={pathname === "/"}>
-          Trang chủ
-        </S.SidebarItem>
-        <S.SidebarItem to="/about" active={pathname === "/about"}>
-          Giới thiệu
-        </S.SidebarItem>
+        {renderSidebarItems()}
         <Button
           onClick={() =>
             navigate("/login", {

@@ -1,6 +1,11 @@
-import { Outlet } from "react-router-dom";
+import { Outlet, Navigate } from "react-router-dom";
+
+import { ROUTES } from "../../constants/routes";
 
 const LoginLayout = () => {
+  const accessToken = localStorage.getItem("accessToken");
+
+  if (accessToken) return <Navigate to={ROUTES.USER.HOME} />;
   return (
     <div>
       <Outlet />

@@ -16,7 +16,10 @@ const store = configureStore({
     category: categoryReducer,
   },
   middleware: (getDefaultMiddleware) => [
-    ...getDefaultMiddleware({ thunk: false }),
+    ...getDefaultMiddleware({
+      thunk: false,
+      serializableCheck: false,
+    }),
     sagaMiddleware,
   ],
 });

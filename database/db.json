@@ -43,6 +43,24 @@
       "price": 25000000,
       "categoryId": 3,
       "id": 5
+    },
+    {
+      "name": "LG V40",
+      "price": 25000000,
+      "categoryId": 3,
+      "id": 6
+    },
+    {
+      "name": "LG V40",
+      "price": 25000000,
+      "categoryId": 3,
+      "id": 7
+    },
+    {
+      "name": "LG V40",
+      "price": 25000000,
+      "categoryId": 3,
+      "id": 8
     }
   ],
   "categories": [

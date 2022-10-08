@@ -1,20 +1,33 @@
 import { takeEvery, put } from "redux-saga/effects";
 import axios from "axios";
 
-function* getProductListSaga() {
+import { PRODUCT_ACTION, REQUEST, SUCCESS, FAIL } from "../constants";
+
+function* getProductListSaga(action) {
   try {
-    const result = yield axios.get(
-      "http://localhost:4000/products?_expand=category"
-    );
+    const { params, more } = action.payload;
+    const result = yield axios.get("http://localhost:4000/products", {
+      params: {
+        _expand: "category",
+        _page: params.page,
+        _limit: params.limit,
+      },
+    });
     yield put({
-      type: "GET_PRODUCT_LIST_SUCCESS",
+      type: SUCCESS(PRODUCT_ACTION.GET_PRODUCT_LIST),
       payload: {
         data: result.data,
+        meta: {
+          total: parseInt(result.headers["x-total-count"]),
+          page: params.page,
+          limit: params.limit,
+        },
+        more: more,
       },
     });
   } catch (e) {
     yield put({
-      type: "GET_PRODUCT_LIST_FAIL",
+      type: FAIL(PRODUCT_ACTION.GET_PRODUCT_LIST),
       payload: {
         error: "Đã có lỗi xảy ra!",
       },
@@ -84,7 +97,7 @@ function* deleteProductSaga(action) {
 }
 
 export default function* productSaga() {
-  yield takeEvery("GET_PRODUCT_LIST_REQUEST", getProductListSaga);
+  yield takeEvery(REQUEST(PRODUCT_ACTION.GET_PRODUCT_LIST), getProductListSaga);
   yield takeEvery("CREATE_PRODUCT_REQUEST", createProductSaga);
   yield takeEvery("UPDATE_PRODUCT_REQUEST", updateProductSaga);
   yield takeEvery("DELETE_PRODUCT_REQUEST", deleteProductSaga);

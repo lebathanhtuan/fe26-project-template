@@ -4,9 +4,12 @@ import { useDispatch } from "react-redux";
 import jwtDecode from "jwt-decode";
 
 import AdminLayout from "./layouts/AdminLayout";
+import UserLayout from "./layouts/UserLayout";
 import LoginLayout from "./layouts/LoginLayout";
+import AdminProductListPage from "./pages/admin/ProductListPage";
 import HomePage from "./pages/HomePage";
 import AboutPage from "./pages/AboutPage";
+import ProductListPage from "./pages/user/ProductListPage";
 import ProductDetailPage from "./pages/ProductDetailPage";
 import LoginPage from "./pages/LoginPage";
 import RegisterPage from "./pages/RegisterPage";
@@ -33,11 +36,23 @@ function App() {
       <Routes>
         <Route element={<AdminLayout />}>
           <Route path={ROUTES.ADMIN.DASHBOARD} element={<div>Dashboard</div>} />
-          <Route path={ROUTES.ADMIN.PRODUCT_LIST} element={<HomePage />} />
-          <Route path="/product/:id" element={<ProductDetailPage />} />
+          <Route
+            path={ROUTES.ADMIN.PRODUCT_LIST}
+            element={<AdminProductListPage />}
+          />
         </Route>
-        {/* <Route path="/about" element={<AboutPage />} /> */}
-        {/* <Route path="/" element={<HomePage />} /> */}
+        <Route element={<UserLayout />}>
+          <Route path={ROUTES.USER.HOME} element={<HomePage />} />
+          <Route
+            path={ROUTES.USER.PRODUCT_LIST}
+            element={<ProductListPage />}
+          />
+          <Route
+            path={ROUTES.USER.PRODUCT_DETAIL}
+            element={<ProductDetailPage />}
+          />
+          <Route path={ROUTES.USER.ABOUT} element={<AboutPage />} />
+        </Route>
         <Route element={<LoginLayout />}>
           <Route path={ROUTES.LOGIN} element={<LoginPage />} />
           <Route path={ROUTES.REGISTER} element={<RegisterPage />} />
