@@ -1,4 +1,4 @@
-import { takeEvery, put } from "redux-saga/effects";
+import { takeEvery, debounce, put } from "redux-saga/effects";
 import axios from "axios";
 
 import { PRODUCT_ACTION, REQUEST, SUCCESS, FAIL } from "../constants";
@@ -44,9 +44,12 @@ function* getProductListSaga(action) {
 function* getProductDetailSaga(action) {
   try {
     const { id } = action.payload;
-    const result = yield axios.get(
-      `http://localhost:4000/products/${id}?_expand=category`
-    );
+    const result = yield axios.get(`http://localhost:4000/products/${id}`, {
+      params: {
+        _expand: "category",
+        _embed: "options",
+      },
+    });
     yield put({
       type: SUCCESS(PRODUCT_ACTION.GET_PRODUCT_DETAIL),
       payload: {
@@ -125,7 +128,11 @@ function* deleteProductSaga(action) {
 }
 
 export default function* productSaga() {
-  yield takeEvery(REQUEST(PRODUCT_ACTION.GET_PRODUCT_LIST), getProductListSaga);
+  yield debounce(
+    500,
+    REQUEST(PRODUCT_ACTION.GET_PRODUCT_LIST),
+    getProductListSaga
+  );
   yield takeEvery(
     REQUEST(PRODUCT_ACTION.GET_PRODUCT_DETAIL),
     getProductDetailSaga

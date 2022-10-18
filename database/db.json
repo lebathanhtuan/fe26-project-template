@@ -24,49 +24,58 @@
       "id": 1,
       "name": "iPhone 12",
       "price": 12000000,
-      "categoryId": 1
+      "categoryId": 1,
+      "content": "<p class=\"ql-align-justify\"><strong>Galaxy S22 Ultra 5G</strong> được kế thừa form thiết kế từ những dòng Note trước đây của hãng đem đến cho bạn có cảm giác vừa mới lạ vừa hoài niệm. Trọng lượng của máy 228 g cho cảm giác cầm nắm đầm tay, khi cầm máy trần thì hơi có cảm giác dễ trượt.</p><p class=\"ql-align-justify\"><br></p><p class=\"ql-align-justify\"><a href=\"https://cdn.tgdd.vn/Products/Images/42/235838/samsung-galaxy-s22-ultra-10-2.jpg\" rel=\"noopener noreferrer\" target=\"_blank\" style=\"color: rgb(47, 128, 237);\"><img src=\"https://cdn.tgdd.vn/Products/Images/42/235838/samsung-galaxy-s22-ultra-10-2.jpg\" alt=\"Galaxy S22 Ultra 5G - Thiết kế\"></a></p><p class=\"ql-align-justify\"><br></p><p class=\"ql-align-justify\">Phần mặt lưng&nbsp;<a href=\"https://www.thegioididong.com/dtdd\" rel=\"noopener noreferrer\" target=\"_blank\" style=\"color: rgb(47, 128, 237);\">điện thoại</a>&nbsp;được làm nhám nên hạn chế tốt việc bám dấu vân tay, có thiết kế cũng khá đơn giản nhưng vẫn toát lên vẻ sang trọng và cao cấp của chiếc máy. Cụm camera sau trên Galaxy S22 Ultra 5G được thiết kế trần tạo cảm giác gọn gàng và cũng tạo nên một điểm nhấn độc đáo cho chiếc máy.</p>",
+      "updatedAt": 1666099748075
     },
     {
       "id": 2,
       "name": "iPhone 13",
       "price": 15000000,
-      "categoryId": 1
+      "categoryId": 1,
+      "content": ""
     },
     {
       "id": 3,
       "name": "Samsung Note 20",
       "price": 15000000,
-      "categoryId": 2
+      "categoryId": 2,
+      "content": ""
     },
     {
       "name": "LG V40",
       "price": 25000000,
       "categoryId": 3,
-      "id": 5
+      "id": 5,
+      "content": ""
     },
     {
       "name": "LG V40",
       "price": 25000000,
       "categoryId": 3,
-      "id": 6
+      "id": 6,
+      "content": ""
     },
     {
       "name": "LG V40",
       "price": 25000000,
       "categoryId": 3,
-      "id": 7
+      "id": 7,
+      "content": ""
     },
     {
       "name": "LG V40",
       "price": 25000000,
       "categoryId": 3,
-      "id": 8
+      "id": 8,
+      "content": ""
     },
     {
       "name": "LG V40",
       "price": 25000000,
       "categoryId": 3,
-      "id": 9
+      "id": 9,
+      "content": ""
     }
   ],
   "categories": [
@@ -81,6 +90,20 @@
     {
       "id": 3,
       "name": "LG"
+    }
+  ],
+  "options": [
+    {
+      "id": 1,
+      "productId": 1,
+      "name": "64Gb",
+      "bonusPrice": 0
+    },
+    {
+      "id": 1,
+      "productId": 1,
+      "name": "128Gb",
+      "bonusPrice": 500000
     }
   ]
 }

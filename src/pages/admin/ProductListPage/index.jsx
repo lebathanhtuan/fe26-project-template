@@ -1,22 +1,22 @@
 import { useEffect } from "react";
 import { Button, Table, Space, Pagination, Avatar } from "antd";
 import { useSelector, useDispatch } from "react-redux";
+import { useNavigate, generatePath } from "react-router-dom";
 
 import {
   getProductListAction,
   getCategoryListAction,
 } from "../../../redux/actions";
 import { ADMIN_TABLE_LIMIT } from "../../../constants/pagination";
+import { ROUTES } from "../../../constants/routes";
 import * as S from "./styles";
 
 const AdminProductListPage = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+
   const { productList, createProductData } = useSelector(
     (state) => state.product
-  );
-  console.log(
-    "🚀 ~ file: index.jsx ~ line 15 ~ AdminProductListPage ~ productList",
-    productList
   );
   const { categoryList } = useSelector((state) => state.category);
 
@@ -83,10 +83,18 @@ const AdminProductListPage = () => {
       title: "Action",
       dataIndex: "action",
       key: "action",
-      render: () => {
+      render: (_, record) => {
         return (
           <Space>
-            <Button>Update</Button>
+            <Button
+              onClick={() =>
+                navigate(
+                  generatePath(ROUTES.ADMIN.UPDATE_PRODUCT, { id: record.id })
+                )
+              }
+            >
+              Update
+            </Button>
             <Button>Delete</Button>
           </Space>
         );

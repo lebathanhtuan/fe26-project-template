@@ -6,7 +6,10 @@ import jwtDecode from "jwt-decode";
 import AdminLayout from "./layouts/AdminLayout";
 import UserLayout from "./layouts/UserLayout";
 import LoginLayout from "./layouts/LoginLayout";
+
 import AdminProductListPage from "./pages/admin/ProductListPage";
+import AdminUpdateProductPage from "./pages/admin/UpdateProductPage";
+
 import HomePage from "./pages/HomePage";
 import AboutPage from "./pages/AboutPage";
 import ProductListPage from "./pages/user/ProductListPage";
@@ -39,6 +42,10 @@ function App() {
           <Route
             path={ROUTES.ADMIN.PRODUCT_LIST}
             element={<AdminProductListPage />}
+          />
+          <Route
+            path={ROUTES.ADMIN.UPDATE_PRODUCT}
+            element={<AdminUpdateProductPage />}
           />
         </Route>
         <Route element={<UserLayout />}>

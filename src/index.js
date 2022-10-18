@@ -8,6 +8,7 @@ import reportWebVitals from "./reportWebVitals";
 import { store } from "./store";
 
 import "antd/dist/antd.less";
+import "react-quill/dist/quill.snow.css";
 import "./index.css";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
