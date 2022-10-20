@@ -1,5 +1,5 @@
 import { useEffect, useMemo } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import {
   Button,
@@ -13,49 +13,31 @@ import {
 } from "antd";
 import ReactQuill from "react-quill";
 
-import * as S from "./styles";
-
 import { ROUTES } from "../../../constants/routes";
 import {
-  getProductDetailAction,
   getCategoryListAction,
-  updateProductAction,
+  createProductAction,
 } from "../../../redux/actions";
 
-const UpdateProductPage = () => {
-  const { id } = useParams();
+import * as S from "./styles";
+
+const CreateProductPage = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const [updateForm] = Form.useForm();
+  const [createForm] = Form.useForm();
 
   const { productDetail } = useSelector((state) => state.product);
   const { categoryList } = useSelector((state) => state.category);
 
-  const initialValues = {
-    name: productDetail.data.name,
-    price: productDetail.data.price,
-    categoryId: productDetail.data.categoryId,
-    content: productDetail.data.content,
-    options: productDetail.data.options,
-  };
-
   useEffect(() => {
-    dispatch(getProductDetailAction({ id: id }));
     dispatch(getCategoryListAction());
-  }, [id]);
+  }, []);
 
-  useEffect(() => {
-    if (productDetail.data.id) {
-      updateForm.resetFields();
-    }
-  }, [productDetail.data]);
-
-  const handleUpdateProduct = (values) => {
+  const handleCreateProduct = (values) => {
     const { options, ...productValues } = values;
     dispatch(
-      updateProductAction({
-        id: id,
+      createProductAction({
         values: productValues,
         options: options,
         callback: {
@@ -78,17 +60,16 @@ const UpdateProductPage = () => {
   return (
     <S.Wrapper>
       <S.TopWrapper>
-        <h3>Update Product</h3>
-        <Button type="primary" onClick={() => updateForm.submit()}>
-          Update
+        <h3>Create Product</h3>
+        <Button type="primary" onClick={() => createForm.submit()}>
+          Create
         </Button>
       </S.TopWrapper>
       <Spin spinning={productDetail.loading}>
         <Form
-          form={updateForm}
+          form={createForm}
           layout="vertical"
-          initialValues={initialValues}
-          onFinish={(values) => handleUpdateProduct(values)}
+          onFinish={(values) => handleCreateProduct(values)}
         >
           <Form.Item label="Name" name="name">
             <Input />
@@ -112,8 +93,7 @@ const UpdateProductPage = () => {
             <ReactQuill
               theme="snow"
               onChange={(value) => {
-                console.log(value);
-                updateForm.setFieldsValue({ content: value });
+                createForm.setFieldsValue({ content: value });
               }}
             />
           </Form.Item>
@@ -158,4 +138,4 @@ const UpdateProductPage = () => {
   );
 };
 
-export default UpdateProductPage;
+export default CreateProductPage;

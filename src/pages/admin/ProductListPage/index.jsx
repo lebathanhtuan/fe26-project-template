@@ -109,7 +109,12 @@ const AdminProductListPage = () => {
       <S.Wrapper>
         <S.TopWrapper>
           <h3>Product List</h3>
-          <Button type="primary">Create Product</Button>
+          <Button
+            type="primary"
+            onClick={() => navigate(ROUTES.ADMIN.CREATE_PRODUCT)}
+          >
+            Create Product
+          </Button>
         </S.TopWrapper>
         <Table
           columns={tableColumn}

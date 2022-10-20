@@ -68,15 +68,23 @@ function* getProductDetailSaga(action) {
 
 function* createProductSaga(action) {
   try {
-    const { values } = action.payload;
+    const { values, options, callback } = action.payload;
     const result = yield axios.post("http://localhost:4000/products", values);
+    for (let i = 0; i <= options.length; i++) {
+      yield axios.post("http://localhost:4000/options", {
+        productId: result.data.id,
+        name: options[i].name,
+        bonusPrice: options[i].bonusPrice,
+      });
+    }
+
     yield put({
       type: "CREATE_PRODUCT_SUCCESS",
       payload: {
         data: result.data,
       },
     });
-    yield put({ type: "GET_PRODUCT_LIST_REQUEST" });
+    yield callback.goToList();
   } catch (e) {
     yield put({
       type: "CREATE_PRODUCT_FAIL",
@@ -89,18 +97,33 @@ function* createProductSaga(action) {
 
 function* updateProductSaga(action) {
   try {
-    const { values, id } = action.payload;
+    const { id, values, options, callback } = action.payload;
     const result = yield axios.patch(
       `http://localhost:4000/products/${id}`,
       values
     );
+    for (let i = 0; i <= options.length; i++) {
+      if (options[i].id) {
+        yield axios.patch(`http://localhost:4000/options/${options[i].id}`, {
+          productId: result.data.id,
+          name: options[i].name,
+          bonusPrice: options[i].bonusPrice,
+        });
+      } else {
+        yield axios.post("http://localhost:4000/options", {
+          productId: result.data.id,
+          name: options[i].name,
+          bonusPrice: options[i].bonusPrice,
+        });
+      }
+    }
     yield put({
       type: "UPDATE_PRODUCT_SUCCESS",
       payload: {
         data: result.data,
       },
     });
-    yield put({ type: "GET_PRODUCT_LIST_REQUEST" });
+    yield callback.goToList();
   } catch (e) {
     yield put({
       type: "UPDATE_PRODUCT_FAIL",

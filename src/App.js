@@ -8,6 +8,7 @@ import UserLayout from "./layouts/UserLayout";
 import LoginLayout from "./layouts/LoginLayout";
 
 import AdminProductListPage from "./pages/admin/ProductListPage";
+import AdminCreateProductPage from "./pages/admin/CreateProductPage";
 import AdminUpdateProductPage from "./pages/admin/UpdateProductPage";
 
 import HomePage from "./pages/HomePage";
@@ -42,6 +43,10 @@ function App() {
           <Route
             path={ROUTES.ADMIN.PRODUCT_LIST}
             element={<AdminProductListPage />}
+          />
+          <Route
+            path={ROUTES.ADMIN.CREATE_PRODUCT}
+            element={<AdminCreateProductPage />}
           />
           <Route
             path={ROUTES.ADMIN.UPDATE_PRODUCT}

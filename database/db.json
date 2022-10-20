@@ -76,6 +76,15 @@
       "categoryId": 3,
       "id": 9,
       "content": ""
+    },
+    {
+      "name": "iPhone 14",
+      "categoryId": 1,
+      "price": 20000000,
+      "content": "<p>ABC</p>",
+      "createdAt": 1666272222028,
+      "updatedAt": 1666273220391,
+      "id": 10
     }
   ],
   "categories": [
@@ -100,10 +109,42 @@
       "bonusPrice": 0
     },
     {
-      "id": 1,
+      "id": 2,
       "productId": 1,
       "name": "128Gb",
       "bonusPrice": 500000
+    },
+    {
+      "productId": 10,
+      "name": "123123",
+      "bonusPrice": 0,
+      "createdAt": 1666272222073,
+      "updatedAt": 1666273220429,
+      "id": 3
+    },
+    {
+      "productId": 10,
+      "name": "456456",
+      "bonusPrice": 5000000,
+      "createdAt": 1666272222108,
+      "updatedAt": 1666273220478,
+      "id": 4
+    },
+    {
+      "productId": 10,
+      "name": "789789",
+      "bonusPrice": 10000000,
+      "createdAt": 1666273078728,
+      "updatedAt": 1666273220523,
+      "id": 5
+    },
+    {
+      "productId": 10,
+      "name": "ABCD",
+      "bonusPrice": 1234567,
+      "createdAt": 1666273220569,
+      "updatedAt": 1666273220569,
+      "id": 6
     }
   ]
 }
