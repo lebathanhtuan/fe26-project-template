@@ -12,6 +12,7 @@ import {
   Card,
 } from "antd";
 import ReactQuill from "react-quill";
+import slug from "slug";
 
 import { ROUTES } from "../../../constants/routes";
 import {
@@ -38,7 +39,10 @@ const CreateProductPage = () => {
     const { options, ...productValues } = values;
     dispatch(
       createProductAction({
-        values: productValues,
+        values: {
+          ...productValues,
+          slug: slug(productValues.name),
+        },
         options: options,
         callback: {
           goToList: () => navigate(ROUTES.ADMIN.PRODUCT_LIST),
@@ -74,7 +78,7 @@ const CreateProductPage = () => {
           <Form.Item label="Name" name="name">
             <Input />
           </Form.Item>
-          <Form.Item label="Cateogry" name="categoryId">
+          <Form.Item label="Category" name="categoryId">
             <Select>{renderProductOptions}</Select>
           </Form.Item>
           <Space>
@@ -126,6 +130,13 @@ const CreateProductPage = () => {
                         style={{ width: 200 }}
                       />
                     </Form.Item>
+                    <Button
+                      ghost
+                      danger
+                      onClick={() => callback.remove(field.name)}
+                    >
+                      Delete
+                    </Button>
                   </Card>
                 ))}
                 <Button onClick={() => callback.add()}>Add option</Button>

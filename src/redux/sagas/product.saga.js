@@ -2,6 +2,7 @@ import { takeEvery, debounce, put } from "redux-saga/effects";
 import axios from "axios";
 
 import { PRODUCT_ACTION, REQUEST, SUCCESS, FAIL } from "../constants";
+import { ADMIN_TABLE_LIMIT } from "../../constants/pagination";
 
 function* getProductListSaga(action) {
   try {
@@ -70,7 +71,7 @@ function* createProductSaga(action) {
   try {
     const { values, options, callback } = action.payload;
     const result = yield axios.post("http://localhost:4000/products", values);
-    for (let i = 0; i <= options.length; i++) {
+    for (let i = 0; i < options.length; i++) {
       yield axios.post("http://localhost:4000/options", {
         productId: result.data.id,
         name: options[i].name,
@@ -79,7 +80,7 @@ function* createProductSaga(action) {
     }
 
     yield put({
-      type: "CREATE_PRODUCT_SUCCESS",
+      type: SUCCESS(PRODUCT_ACTION.CREATE_PRODUCT),
       payload: {
         data: result.data,
       },
@@ -87,7 +88,7 @@ function* createProductSaga(action) {
     yield callback.goToList();
   } catch (e) {
     yield put({
-      type: "CREATE_PRODUCT_FAIL",
+      type: FAIL(PRODUCT_ACTION.CREATE_PRODUCT),
       payload: {
         error: "Đã có lỗi xảy ra!",
       },
@@ -97,12 +98,12 @@ function* createProductSaga(action) {
 
 function* updateProductSaga(action) {
   try {
-    const { id, values, options, callback } = action.payload;
+    const { id, values, options, initialOptionIds, callback } = action.payload;
     const result = yield axios.patch(
       `http://localhost:4000/products/${id}`,
       values
     );
-    for (let i = 0; i <= options.length; i++) {
+    for (let i = 0; i < options.length; i++) {
       if (options[i].id) {
         yield axios.patch(`http://localhost:4000/options/${options[i].id}`, {
           productId: result.data.id,
@@ -117,8 +118,18 @@ function* updateProductSaga(action) {
         });
       }
     }
+    for (let j = 0; j < initialOptionIds.length; j++) {
+      const keepOption = options.find(
+        (item) => item.id && item.id === initialOptionIds[j]
+      );
+      if (!keepOption) {
+        yield axios.delete(
+          `http://localhost:4000/options/${initialOptionIds[j]}`
+        );
+      }
+    }
     yield put({
-      type: "UPDATE_PRODUCT_SUCCESS",
+      type: SUCCESS(PRODUCT_ACTION.UPDATE_PRODUCT),
       payload: {
         data: result.data,
       },
@@ -126,7 +137,7 @@ function* updateProductSaga(action) {
     yield callback.goToList();
   } catch (e) {
     yield put({
-      type: "UPDATE_PRODUCT_FAIL",
+      type: FAIL(PRODUCT_ACTION.UPDATE_PRODUCT),
       payload: {
         error: "Đã có lỗi xảy ra!",
       },
@@ -138,11 +149,17 @@ function* deleteProductSaga(action) {
   try {
     const { id } = action.payload;
     yield axios.delete(`http://localhost:4000/products/${id}`);
-    yield put({ type: "DELETE_PRODUCT_SUCCESS" });
-    yield put({ type: "GET_PRODUCT_LIST_REQUEST" });
+    yield put({ type: SUCCESS(PRODUCT_ACTION.DELETE_PRODUCT) });
+    yield put({
+      type: REQUEST(PRODUCT_ACTION.GET_PRODUCT_LIST),
+      payload: {
+        page: 1,
+        limit: ADMIN_TABLE_LIMIT,
+      },
+    });
   } catch (e) {
     yield put({
-      type: "DELETE_PRODUCT_FAIL",
+      type: FAIL(PRODUCT_ACTION.DELETE_PRODUCT),
       payload: {
         error: "Đã có lỗi xảy ra!",
       },
@@ -160,7 +177,7 @@ export default function* productSaga() {
     REQUEST(PRODUCT_ACTION.GET_PRODUCT_DETAIL),
     getProductDetailSaga
   );
-  yield takeEvery("CREATE_PRODUCT_REQUEST", createProductSaga);
-  yield takeEvery("UPDATE_PRODUCT_REQUEST", updateProductSaga);
-  yield takeEvery("DELETE_PRODUCT_REQUEST", deleteProductSaga);
+  yield takeEvery(REQUEST(PRODUCT_ACTION.CREATE_PRODUCT), createProductSaga);
+  yield takeEvery(REQUEST(PRODUCT_ACTION.UPDATE_PRODUCT), updateProductSaga);
+  yield takeEvery(REQUEST(PRODUCT_ACTION.DELETE_PRODUCT), deleteProductSaga);
 }

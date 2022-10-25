@@ -87,6 +87,8 @@ const AdminProductListPage = () => {
         return (
           <Space>
             <Button
+              type="primary"
+              ghost
               onClick={() =>
                 navigate(
                   generatePath(ROUTES.ADMIN.UPDATE_PRODUCT, { id: record.id })
@@ -95,7 +97,9 @@ const AdminProductListPage = () => {
             >
               Update
             </Button>
-            <Button>Delete</Button>
+            <Button ghost danger>
+              Delete
+            </Button>
           </Space>
         );
       },

@@ -58,6 +58,7 @@ const UpdateProductPage = () => {
         id: id,
         values: productValues,
         options: options,
+        initialOptionIds: productDetail.data.options.map((item) => item.id),
         callback: {
           goToList: () => navigate(ROUTES.ADMIN.PRODUCT_LIST),
         },
@@ -93,7 +94,7 @@ const UpdateProductPage = () => {
           <Form.Item label="Name" name="name">
             <Input />
           </Form.Item>
-          <Form.Item label="Cateogry" name="categoryId">
+          <Form.Item label="Category" name="categoryId">
             <Select>{renderProductOptions}</Select>
           </Form.Item>
           <Space>
@@ -111,43 +112,54 @@ const UpdateProductPage = () => {
           <Form.Item label="Content" name="content">
             <ReactQuill
               theme="snow"
-              onChange={(value) => {
-                console.log(value);
-                updateForm.setFieldsValue({ content: value });
-              }}
+              onChange={(value) =>
+                updateForm.setFieldsValue({ content: value })
+              }
             />
           </Form.Item>
           <Form.List name="options">
             {(fields, callback) => (
               <>
-                {fields.map((field) => (
-                  <Card
-                    key={field.key}
-                    size="small"
-                    style={{ marginBottom: 16 }}
-                  >
-                    <Form.Item
-                      {...field}
-                      label="Option name"
-                      name={[field.name, "name"]}
+                {fields.map((field) => {
+                  return (
+                    <Card
+                      key={`card-${field.key}`}
+                      size="small"
+                      style={{ marginBottom: 16 }}
                     >
-                      <Input />
-                    </Form.Item>
-                    <Form.Item
-                      {...field}
-                      label="Bonus price"
-                      name={[field.name, "bonusPrice"]}
-                    >
-                      <InputNumber
-                        formatter={(value) =>
-                          value.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
-                        }
-                        parser={(value) => value.replace(/\$\s?|(,*)/g, "")}
-                        style={{ width: 200 }}
-                      />
-                    </Form.Item>
-                  </Card>
-                ))}
+                      <Form.Item
+                        {...field}
+                        label="Option name"
+                        name={[field.name, "name"]}
+                      >
+                        <Input />
+                      </Form.Item>
+                      <Form.Item
+                        {...field}
+                        label="Bonus price"
+                        name={[field.name, "bonusPrice"]}
+                      >
+                        <InputNumber
+                          formatter={(value) =>
+                            value.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+                          }
+                          parser={(value) => value.replace(/\$\s?|(,*)/g, "")}
+                          style={{ width: 200 }}
+                        />
+                      </Form.Item>
+                      <Button
+                        ghost
+                        danger
+                        onClick={() => {
+                          callback.remove(field.name);
+                          // call API delete by id
+                        }}
+                      >
+                        Delete
+                      </Button>
+                    </Card>
+                  );
+                })}
                 <Button onClick={() => callback.add()}>Add option</Button>
               </>
             )}

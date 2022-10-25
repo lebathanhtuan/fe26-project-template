@@ -1,16 +1,22 @@
 import { useEffect, useMemo, useState } from "react";
 import { useParams, Link, generatePath } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { Button, Radio } from "antd";
+import { Button, Radio, InputNumber } from "antd";
 
-import { getProductDetailAction } from "../../../redux/actions";
+import {
+  getProductDetailAction,
+  addToCartAction,
+} from "../../../redux/actions";
 import { ROUTES } from "../../../constants/routes";
 
 import * as S from "./styles";
 
 const ProductDetailPage = () => {
   const [selectedOptionId, setSelectedOptionId] = useState("");
+  const [productQuantity, setProductQuantity] = useState(1);
+
   const { id } = useParams();
+  const productId = parseInt(id.split(".")[1]);
   const dispatch = useDispatch();
 
   const { productDetail } = useSelector((state) => state.product);
@@ -23,14 +29,26 @@ const ProductDetailPage = () => {
   const productPrice = (productDetail.data.price || 0) + bonusPrice;
 
   useEffect(() => {
-    dispatch(getProductDetailAction({ id: id }));
-  }, [id]);
+    dispatch(getProductDetailAction({ id: productId }));
+  }, [productId]);
 
   useEffect(() => {
     if (hasOptions) {
       setSelectedOptionId(productDetail.data.options[0].id);
     }
   }, [productDetail.data, hasOptions]);
+
+  const handleAddToCart = () => {
+    dispatch(
+      addToCartAction({
+        productId: productId,
+        name: productDetail.data.name,
+        quantity: productQuantity,
+        price: productPrice,
+        slug: productDetail.data.slug,
+      })
+    );
+  };
 
   const renderProductOptions = useMemo(() => {
     return productDetail.data.options?.map((item) => {
@@ -57,6 +75,14 @@ const ProductDetailPage = () => {
           {renderProductOptions}
         </Radio.Group>
       )}
+      <InputNumber
+        min={1}
+        onChange={(value) => setProductQuantity(value)}
+        value={productQuantity}
+      />
+      <Button type="primary" onClick={() => handleAddToCart()}>
+        Add to cart
+      </Button>
       <S.ProductContent
         dangerouslySetInnerHTML={{
           __html: productDetail.data.content,

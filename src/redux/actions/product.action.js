@@ -8,6 +8,12 @@ export const getProductListAction = createAction(
 export const getProductDetailAction = createAction(
   REQUEST(PRODUCT_ACTION.GET_PRODUCT_DETAIL)
 );
-export const createProductAction = createAction("CREATE_PRODUCT_REQUEST");
-export const updateProductAction = createAction("UPDATE_PRODUCT_REQUEST");
-export const deleteProductAction = createAction("DELETE_PRODUCT_REQUEST");
+export const createProductAction = createAction(
+  REQUEST(PRODUCT_ACTION.CREATE_PRODUCT)
+);
+export const updateProductAction = createAction(
+  REQUEST(PRODUCT_ACTION.UPDATE_PRODUCT)
+);
+export const deleteProductAction = createAction(
+  REQUEST(PRODUCT_ACTION.DELETE_PRODUCT)
+);

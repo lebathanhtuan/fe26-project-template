@@ -5,7 +5,7 @@ import { LoadingOutlined } from "@ant-design/icons";
 
 import { ROUTES } from "../../constants/routes";
 
-import Header from "../Header";
+import Header from "../AdminHeader";
 import Sidebar from "../Sidebar";
 import Footer from "../Footer";
 
@@ -13,7 +13,6 @@ import * as S from "./styles";
 
 function AdminLayout() {
   const [isShowSidebar, setIsShowSidebar] = useState(true);
-  const [isShowDrawer, setIsShowDrawer] = useState(false);
 
   const { userInfo } = useSelector((state) => state.user);
 
@@ -33,21 +32,12 @@ function AdminLayout() {
       <Header
         isShowSidebar={isShowSidebar}
         setIsShowSidebar={setIsShowSidebar}
-        isShowDrawer={isShowDrawer}
-        setIsShowDrawer={setIsShowDrawer}
       />
       <S.MainContainer>
         <Sidebar isShowSidebar={isShowSidebar} />
         <S.MainContent isShowSidebar={isShowSidebar}>
           <Outlet />
         </S.MainContent>
-        <S.DrawerOverlay
-          isShowDrawer={isShowDrawer}
-          onClick={() => setIsShowDrawer(false)}
-        />
-        <S.DrawerContainer isShowDrawer={isShowDrawer}>
-          Drawer content
-        </S.DrawerContainer>
       </S.MainContainer>
       <Footer />
     </>

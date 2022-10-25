@@ -112,7 +112,11 @@ const ProductListPage = () => {
     return productList.data.map((item) => {
       return (
         <Col span={6} key={item.id}>
-          <Link to={generatePath(ROUTES.USER.PRODUCT_DETAIL, { id: item.id })}>
+          <Link
+            to={generatePath(ROUTES.USER.PRODUCT_DETAIL, {
+              id: `${item.slug}.${item.id}`,
+            })}
+          >
             <Card size="small" title={item.name}>
               {item.price.toLocaleString()}
             </Card>

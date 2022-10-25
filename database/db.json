@@ -26,65 +26,84 @@
       "price": 12000000,
       "categoryId": 1,
       "content": "<p class=\"ql-align-justify\"><strong>Galaxy S22 Ultra 5G</strong> được kế thừa form thiết kế từ những dòng Note trước đây của hãng đem đến cho bạn có cảm giác vừa mới lạ vừa hoài niệm. Trọng lượng của máy 228 g cho cảm giác cầm nắm đầm tay, khi cầm máy trần thì hơi có cảm giác dễ trượt.</p><p class=\"ql-align-justify\"><br></p><p class=\"ql-align-justify\"><a href=\"https://cdn.tgdd.vn/Products/Images/42/235838/samsung-galaxy-s22-ultra-10-2.jpg\" rel=\"noopener noreferrer\" target=\"_blank\" style=\"color: rgb(47, 128, 237);\"><img src=\"https://cdn.tgdd.vn/Products/Images/42/235838/samsung-galaxy-s22-ultra-10-2.jpg\" alt=\"Galaxy S22 Ultra 5G - Thiết kế\"></a></p><p class=\"ql-align-justify\"><br></p><p class=\"ql-align-justify\">Phần mặt lưng&nbsp;<a href=\"https://www.thegioididong.com/dtdd\" rel=\"noopener noreferrer\" target=\"_blank\" style=\"color: rgb(47, 128, 237);\">điện thoại</a>&nbsp;được làm nhám nên hạn chế tốt việc bám dấu vân tay, có thiết kế cũng khá đơn giản nhưng vẫn toát lên vẻ sang trọng và cao cấp của chiếc máy. Cụm camera sau trên Galaxy S22 Ultra 5G được thiết kế trần tạo cảm giác gọn gàng và cũng tạo nên một điểm nhấn độc đáo cho chiếc máy.</p>",
-      "updatedAt": 1666099748075
+      "slug": "iphone-12",
+      "updatedAt": 1666704015465
     },
     {
       "id": 2,
       "name": "iPhone 13",
       "price": 15000000,
       "categoryId": 1,
-      "content": ""
+      "content": "",
+      "slug": "iphone-13"
     },
     {
       "id": 3,
       "name": "Samsung Note 20",
       "price": 15000000,
       "categoryId": 2,
-      "content": ""
+      "content": "",
+      "slug": "samsung-note-20"
     },
     {
       "name": "LG V40",
       "price": 25000000,
       "categoryId": 3,
       "id": 5,
-      "content": ""
+      "content": "",
+      "slug": "lg-v40"
     },
     {
       "name": "LG V40",
       "price": 25000000,
       "categoryId": 3,
       "id": 6,
-      "content": ""
+      "content": "",
+      "slug": "lg-v40"
     },
     {
       "name": "LG V40",
       "price": 25000000,
       "categoryId": 3,
       "id": 7,
-      "content": ""
+      "content": "",
+      "slug": "lg-v40"
     },
     {
       "name": "LG V40",
       "price": 25000000,
       "categoryId": 3,
       "id": 8,
-      "content": ""
+      "content": "",
+      "slug": "lg-v40"
     },
     {
       "name": "LG V40",
       "price": 25000000,
       "categoryId": 3,
       "id": 9,
-      "content": ""
+      "content": "",
+      "slug": "lg-v40"
     },
     {
       "name": "iPhone 14",
       "categoryId": 1,
       "price": 20000000,
       "content": "<p>ABC</p>",
+      "slug": "iphone-14",
       "createdAt": 1666272222028,
       "updatedAt": 1666273220391,
       "id": 10
+    },
+    {
+      "name": "iPhone 14 Pro Max",
+      "categoryId": 1,
+      "price": 31111111,
+      "content": "<p>123321</p>",
+      "slug": "iphone-14-pro-max",
+      "createdAt": 1666699297746,
+      "updatedAt": 1666699297746,
+      "id": 11
     }
   ],
   "categories": [
@@ -102,18 +121,6 @@
     }
   ],
   "options": [
-    {
-      "id": 1,
-      "productId": 1,
-      "name": "64Gb",
-      "bonusPrice": 0
-    },
-    {
-      "id": 2,
-      "productId": 1,
-      "name": "128Gb",
-      "bonusPrice": 500000
-    },
     {
       "productId": 10,
       "name": "123123",
@@ -145,6 +152,22 @@
       "createdAt": 1666273220569,
       "updatedAt": 1666273220569,
       "id": 6
+    },
+    {
+      "productId": 1,
+      "name": "128Gb",
+      "bonusPrice": 1000000,
+      "createdAt": 1666703666751,
+      "updatedAt": 1666704015496,
+      "id": 8
+    },
+    {
+      "productId": 1,
+      "name": "256Gb",
+      "bonusPrice": 2000000,
+      "createdAt": 1666703699819,
+      "updatedAt": 1666704015543,
+      "id": 9
     }
   ]
 }

@@ -7,7 +7,6 @@ import * as S from "./styles";
 function Sidebar(props) {
   const { isShowSidebar } = props;
   const { pathname } = useLocation();
-  const navigate = useNavigate();
 
   const renderSidebarItems = () => {
     return SIDEBAR_ITEMS.map((item, index) => {
@@ -25,20 +24,7 @@ function Sidebar(props) {
 
   return (
     <S.SidebarContainer isShowSidebar={isShowSidebar}>
-      <S.SidebarContent>
-        {renderSidebarItems()}
-        <Button
-          onClick={() =>
-            navigate("/login", {
-              state: {
-                prevPath: pathname,
-              },
-            })
-          }
-        >
-          Đăng nhập
-        </Button>
-      </S.SidebarContent>
+      <S.SidebarContent>{renderSidebarItems()}</S.SidebarContent>
     </S.SidebarContainer>
   );
 }
