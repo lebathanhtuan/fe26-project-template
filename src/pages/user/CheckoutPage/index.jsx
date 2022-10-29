@@ -1,16 +1,38 @@
 import React from "react";
 import { Button, Steps, Table, InputNumber } from "antd";
 import { useNavigate, Link, generatePath } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 
 import { ROUTES } from "../../../constants/routes";
+import {
+  updateCartItemAction,
+  deleteCartItemAction,
+} from "../../../redux/actions";
 
 import * as S from "./styles";
 
 const CheckoutPage = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const { cartList } = useSelector((state) => state.cart);
+
+  const handleChangeQuantity = (productId, value) => {
+    dispatch(
+      updateCartItemAction({
+        productId: productId,
+        quantity: value,
+      })
+    );
+  };
+
+  const handleDeleteCartItem = (productId) => {
+    dispatch(
+      deleteCartItemAction({
+        productId: productId,
+      })
+    );
+  };
 
   const tableColumn = [
     {
@@ -39,7 +61,13 @@ const CheckoutPage = () => {
       title: "Quantity",
       dataIndex: "quantity",
       key: "quantity",
-      render: (quantity) => <InputNumber value={quantity} />,
+      render: (quantity, record) => (
+        <InputNumber
+          min={1}
+          value={quantity}
+          onChange={(value) => handleChangeQuantity(record.productId, value)}
+        />
+      ),
     },
     {
       title: "Total price",
@@ -47,6 +75,20 @@ const CheckoutPage = () => {
       key: "totalPrice",
       render: (_, record) =>
         `${(record.price * record.quantity).toLocaleString()} VND`,
+    },
+    {
+      title: "Action",
+      dataIndex: "action",
+      key: "action",
+      render: (_, record) => (
+        <Button
+          ghost
+          danger
+          onClick={() => handleDeleteCartItem(record.productId)}
+        >
+          Remove
+        </Button>
+      ),
     },
   ];
 
@@ -61,7 +103,12 @@ const CheckoutPage = () => {
         />
         <Steps.Step title="Waiting" description="This is a description." />
       </Steps>
-      <Table columns={tableColumn} dataSource={cartList} rowKey="id" />
+      <Table
+        columns={tableColumn}
+        dataSource={cartList}
+        rowKey="id"
+        pagination={false}
+      />
       <Button onClick={() => navigate(ROUTES.USER.PRODUCT_LIST)}>
         Go to product list
       </Button>

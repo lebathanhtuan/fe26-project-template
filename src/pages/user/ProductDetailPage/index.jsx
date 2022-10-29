@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 import { useParams, Link, generatePath } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { Button, Radio, InputNumber } from "antd";
+import moment from "moment";
 
 import {
   getProductDetailAction,
@@ -51,6 +52,7 @@ const ProductDetailPage = () => {
   };
 
   const renderProductOptions = useMemo(() => {
+    if (!productDetail.data.options?.length) return null;
     return productDetail.data.options?.map((item) => {
       return (
         <Radio key={item.id} value={item.id}>
@@ -60,10 +62,18 @@ const ProductDetailPage = () => {
     });
   }, [productDetail.data]);
 
+  const renderProductImages = useMemo(() => {
+    if (!productDetail.data.images?.length) return null;
+    return productDetail.data.images?.map((item) => {
+      return <img src={item.image} alt={item.name} width={300} height="auto" />;
+    });
+  }, [productDetail.data]);
+
   return (
     <div>
       <h3>{productDetail.data.name}</h3>
       <p>{productDetail.data.category?.name}</p>
+      {renderProductImages}
       <p>{productPrice?.toLocaleString()}</p>
       {hasOptions && (
         <Radio.Group

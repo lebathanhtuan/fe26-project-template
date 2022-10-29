@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import { Routes, Route } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import jwtDecode from "jwt-decode";
+import "moment/locale/vi";
 
 import AdminLayout from "./layouts/AdminLayout";
 import UserLayout from "./layouts/UserLayout";

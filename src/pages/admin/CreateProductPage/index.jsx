@@ -10,7 +10,9 @@ import {
   Space,
   Spin,
   Card,
+  Upload,
 } from "antd";
+import { PlusOutlined } from "@ant-design/icons";
 import ReactQuill from "react-quill";
 import slug from "slug";
 
@@ -31,19 +33,47 @@ const CreateProductPage = () => {
   const { productDetail } = useSelector((state) => state.product);
   const { categoryList } = useSelector((state) => state.category);
 
+  const initialValues = {
+    name: "",
+    price: undefined,
+    categoryId: undefined,
+    content: "",
+    options: [],
+    images: [],
+  };
+
   useEffect(() => {
     dispatch(getCategoryListAction());
   }, []);
 
-  const handleCreateProduct = (values) => {
-    const { options, ...productValues } = values;
-    dispatch(
+  const convertImageToBase64 = (file) => {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = () => resolve(reader.result);
+      reader.onerror = (error) => reject(error);
+    });
+  };
+
+  const handleCreateProduct = async (values) => {
+    const { options, images, ...productValues } = values;
+    const newImages = [];
+    for (let i = 0; i < images.length; i++) {
+      const imgBase64 = await convertImageToBase64(images[i].originFileObj);
+      await newImages.push({
+        name: images[i].name,
+        type: images[i].type,
+        image: imgBase64,
+      });
+    }
+    await dispatch(
       createProductAction({
         values: {
           ...productValues,
           slug: slug(productValues.name),
         },
         options: options,
+        images: newImages,
         callback: {
           goToList: () => navigate(ROUTES.ADMIN.PRODUCT_LIST),
         },
@@ -73,6 +103,7 @@ const CreateProductPage = () => {
         <Form
           form={createForm}
           layout="vertical"
+          initialValues={initialValues}
           onFinish={(values) => handleCreateProduct(values)}
         >
           <Form.Item label="Name" name="name">
@@ -93,6 +124,73 @@ const CreateProductPage = () => {
             </Form.Item>
             <span>VND</span>
           </Space>
+          <Form.Item label="Options">
+            <Form.List name="options">
+              {(fields, callback) => (
+                <>
+                  {fields.map((field) => (
+                    <Card
+                      key={field.key}
+                      size="small"
+                      style={{ marginBottom: 16 }}
+                    >
+                      <Form.Item
+                        {...field}
+                        label="Option name"
+                        name={[field.name, "name"]}
+                      >
+                        <Input />
+                      </Form.Item>
+                      <Form.Item
+                        {...field}
+                        label="Bonus price"
+                        name={[field.name, "bonusPrice"]}
+                      >
+                        <InputNumber
+                          formatter={(value) =>
+                            value.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+                          }
+                          parser={(value) => value.replace(/\$\s?|(,*)/g, "")}
+                          style={{ width: 200 }}
+                        />
+                      </Form.Item>
+                      <Button
+                        ghost
+                        danger
+                        onClick={() => callback.remove(field.name)}
+                      >
+                        Delete
+                      </Button>
+                    </Card>
+                  ))}
+                  <Button
+                    type="dashed"
+                    block
+                    icon={<PlusOutlined />}
+                    onClick={() => callback.add()}
+                  >
+                    Add option
+                  </Button>
+                </>
+              )}
+            </Form.List>
+          </Form.Item>
+          <Form.Item
+            label="Images"
+            name="images"
+            valuePropName="fileList"
+            getValueFromEvent={(e) => {
+              if (Array.isArray(e)) return e;
+              return e?.fileList;
+            }}
+          >
+            <Upload listType="picture-card" beforeUpload={Upload.LIST_IGNORE}>
+              <div>
+                <PlusOutlined />
+                <div style={{ marginTop: 8 }}>Upload</div>
+              </div>
+            </Upload>
+          </Form.Item>
           <Form.Item label="Content" name="content">
             <ReactQuill
               theme="snow"
@@ -101,48 +199,6 @@ const CreateProductPage = () => {
               }}
             />
           </Form.Item>
-          <Form.List name="options">
-            {(fields, callback) => (
-              <>
-                {fields.map((field) => (
-                  <Card
-                    key={field.key}
-                    size="small"
-                    style={{ marginBottom: 16 }}
-                  >
-                    <Form.Item
-                      {...field}
-                      label="Option name"
-                      name={[field.name, "name"]}
-                    >
-                      <Input />
-                    </Form.Item>
-                    <Form.Item
-                      {...field}
-                      label="Bonus price"
-                      name={[field.name, "bonusPrice"]}
-                    >
-                      <InputNumber
-                        formatter={(value) =>
-                          value.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
-                        }
-                        parser={(value) => value.replace(/\$\s?|(,*)/g, "")}
-                        style={{ width: 200 }}
-                      />
-                    </Form.Item>
-                    <Button
-                      ghost
-                      danger
-                      onClick={() => callback.remove(field.name)}
-                    >
-                      Delete
-                    </Button>
-                  </Card>
-                ))}
-                <Button onClick={() => callback.add()}>Add option</Button>
-              </>
-            )}
-          </Form.List>
         </Form>
       </Spin>
     </S.Wrapper>

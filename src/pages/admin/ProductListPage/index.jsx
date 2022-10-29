@@ -106,8 +106,6 @@ const AdminProductListPage = () => {
     },
   ];
 
-  const tableData = productList.data.map((item) => ({ ...item, key: item.id }));
-
   return (
     <>
       <S.Wrapper>
@@ -121,8 +119,9 @@ const AdminProductListPage = () => {
           </Button>
         </S.TopWrapper>
         <Table
+          rowKey="id"
           columns={tableColumn}
-          dataSource={tableData}
+          dataSource={productList.data}
           pagination={false}
           style={{ flex: 1 }}
         />
