@@ -17,3 +17,6 @@ export const updateProductAction = createAction(
 export const deleteProductAction = createAction(
   REQUEST(PRODUCT_ACTION.DELETE_PRODUCT)
 );
+export const clearProductDetailAction = createAction(
+  REQUEST(PRODUCT_ACTION.CLEAR_PRODUCT)
+);
