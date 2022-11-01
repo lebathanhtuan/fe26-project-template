@@ -16,6 +16,9 @@ const CheckoutPage = () => {
   const dispatch = useDispatch();
 
   const { cartList } = useSelector((state) => state.cart);
+  const totalPrice = cartList
+    .map((item) => item.price * item.quantity)
+    .reduce((total, price) => total + price);
 
   const handleChangeQuantity = (productId, value) => {
     dispatch(
@@ -52,7 +55,7 @@ const CheckoutPage = () => {
       },
     },
     {
-      title: "Price",
+      title: "Unit Price",
       dataIndex: "price",
       key: "price",
       render: (price) => `${price.toLocaleString()} VND`,
@@ -109,6 +112,7 @@ const CheckoutPage = () => {
         rowKey="id"
         pagination={false}
       />
+      <h3>Total: {totalPrice.toLocaleString()} VND</h3>
       <Button onClick={() => navigate(ROUTES.USER.PRODUCT_LIST)}>
         Go to product list
       </Button>

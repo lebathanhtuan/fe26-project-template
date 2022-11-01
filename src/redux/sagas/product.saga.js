@@ -104,11 +104,20 @@ function* createProductSaga(action) {
 
 function* updateProductSaga(action) {
   try {
-    const { id, values, options, initialOptionIds, callback } = action.payload;
+    const {
+      id,
+      values,
+      options,
+      initialOptionIds,
+      images,
+      initialImageIds,
+      callback,
+    } = action.payload;
     const result = yield axios.patch(
       `http://localhost:4000/products/${id}`,
       values
     );
+    // Options
     for (let i = 0; i < options.length; i++) {
       if (options[i].id) {
         yield axios.patch(`http://localhost:4000/options/${options[i].id}`, {
@@ -131,6 +140,30 @@ function* updateProductSaga(action) {
       if (!keepOption) {
         yield axios.delete(
           `http://localhost:4000/options/${initialOptionIds[j]}`
+        );
+      }
+    }
+    // Images
+    for (let i = 0; i < images.length; i++) {
+      if (images[i].id) {
+        yield axios.patch(`http://localhost:4000/images/${images[i].id}`, {
+          ...images[i],
+          productId: result.data.id,
+        });
+      } else {
+        yield axios.post("http://localhost:4000/images", {
+          ...images[i],
+          productId: result.data.id,
+        });
+      }
+    }
+    for (let j = 0; j < initialImageIds.length; j++) {
+      const keepImage = images.find(
+        (item) => item.id && item.id === initialImageIds[j]
+      );
+      if (!keepImage) {
+        yield axios.delete(
+          `http://localhost:4000/images/${initialImageIds[j]}`
         );
       }
     }

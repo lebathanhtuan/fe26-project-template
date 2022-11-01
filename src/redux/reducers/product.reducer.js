@@ -96,7 +96,7 @@ const productReducer = createReducer(initialState, {
     };
   },
 
-  CREATE_PRODUCT_REQUEST: (state, action) => {
+  [REQUEST(PRODUCT_ACTION.CREATE_PRODUCT)]: (state, action) => {
     return {
       ...state,
       createProductData: {
@@ -106,7 +106,7 @@ const productReducer = createReducer(initialState, {
       },
     };
   },
-  CREATE_PRODUCT_SUCCESS: (state, action) => {
+  [SUCCESS(PRODUCT_ACTION.CREATE_PRODUCT)]: (state, action) => {
     return {
       ...state,
       createProductData: {
@@ -115,7 +115,7 @@ const productReducer = createReducer(initialState, {
       },
     };
   },
-  CREATE_PRODUCT_FAIL: (state, action) => {
+  [FAIL(PRODUCT_ACTION.CREATE_PRODUCT)]: (state, action) => {
     const { error } = action.payload;
     return {
       ...state,
@@ -127,7 +127,7 @@ const productReducer = createReducer(initialState, {
     };
   },
 
-  UPDATE_PRODUCT_REQUEST: (state, action) => {
+  [REQUEST(PRODUCT_ACTION.UPDATE_PRODUCT)]: (state, action) => {
     return {
       ...state,
       updateProductData: {
@@ -137,7 +137,7 @@ const productReducer = createReducer(initialState, {
       },
     };
   },
-  UPDATE_PRODUCT_SUCCESS: (state, action) => {
+  [SUCCESS(PRODUCT_ACTION.UPDATE_PRODUCT)]: (state, action) => {
     return {
       ...state,
       updateProductData: {
@@ -146,7 +146,7 @@ const productReducer = createReducer(initialState, {
       },
     };
   },
-  UPDATE_PRODUCT_FAIL: (state, action) => {
+  [FAIL(PRODUCT_ACTION.UPDATE_PRODUCT)]: (state, action) => {
     const { error } = action.payload;
     return {
       ...state,
@@ -158,7 +158,7 @@ const productReducer = createReducer(initialState, {
     };
   },
 
-  DELETE_PRODUCT_REQUEST: (state, action) => {
+  [REQUEST(PRODUCT_ACTION.DELETE_PRODUCT)]: (state, action) => {
     return {
       ...state,
       deleteProductData: {
@@ -168,7 +168,7 @@ const productReducer = createReducer(initialState, {
       },
     };
   },
-  DELETE_PRODUCT_SUCCESS: (state, action) => {
+  [SUCCESS(PRODUCT_ACTION.DELETE_PRODUCT)]: (state, action) => {
     return {
       ...state,
       deleteProductData: {
@@ -177,7 +177,7 @@ const productReducer = createReducer(initialState, {
       },
     };
   },
-  DELETE_PRODUCT_FAIL: (state, action) => {
+  [FAIL(PRODUCT_ACTION.DELETE_PRODUCT)]: (state, action) => {
     const { error } = action.payload;
     return {
       ...state,
@@ -185,6 +185,17 @@ const productReducer = createReducer(initialState, {
         ...state.deleteProductData,
         loading: false,
         error: error,
+      },
+    };
+  },
+
+  [REQUEST(PRODUCT_ACTION.CLEAR_PRODUCT)]: (state, action) => {
+    return {
+      ...state,
+      productDetail: {
+        data: {},
+        loading: false,
+        error: "",
       },
     };
   },
