@@ -189,7 +189,7 @@ const productReducer = createReducer(initialState, {
     };
   },
 
-  [REQUEST(PRODUCT_ACTION.CLEAR_PRODUCT)]: (state, action) => {
+  [REQUEST(PRODUCT_ACTION.CLEAR_PRODUCT_DETAIL)]: (state, action) => {
     return {
       ...state,
       productDetail: {

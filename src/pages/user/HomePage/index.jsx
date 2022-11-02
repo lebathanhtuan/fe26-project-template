@@ -12,6 +12,17 @@ const HomePage = () => {
       <Button onClick={() => navigate(ROUTES.USER.PRODUCT_LIST)}>
         Go to product list
       </Button>
+      <Button
+        onClick={() =>
+          navigate(ROUTES.USER.PRODUCT_LIST, {
+            state: {
+              categoryId: [1, 2],
+            },
+          })
+        }
+      >
+        Go to product list with Apple vs Samsung
+      </Button>
     </>
   );
 };

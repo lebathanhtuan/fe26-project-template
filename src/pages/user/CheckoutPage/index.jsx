@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useMemo } from "react";
 import { Button, Steps, Table, InputNumber } from "antd";
 import { useNavigate, Link, generatePath } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
@@ -9,113 +9,43 @@ import {
   deleteCartItemAction,
 } from "../../../redux/actions";
 
+import Cart from "./components/Cart";
+import Info from "./components/Info";
+import Payment from "./components/Payment";
+import Success from "./components/Success";
 import * as S from "./styles";
 
 const CheckoutPage = () => {
-  const navigate = useNavigate();
-  const dispatch = useDispatch();
+  const [step, setStep] = useState(0);
 
-  const { cartList } = useSelector((state) => state.cart);
-  const totalPrice = cartList
-    .map((item) => item.price * item.quantity)
-    .reduce((total, price) => total + price);
-
-  const handleChangeQuantity = (productId, value) => {
-    dispatch(
-      updateCartItemAction({
-        productId: productId,
-        quantity: value,
-      })
-    );
-  };
-
-  const handleDeleteCartItem = (productId) => {
-    dispatch(
-      deleteCartItemAction({
-        productId: productId,
-      })
-    );
-  };
-
-  const tableColumn = [
-    {
-      title: "Name",
-      dataIndex: "name",
-      key: "name",
-      render: (_, record) => {
-        return (
-          <Link
-            to={generatePath(ROUTES.USER.PRODUCT_DETAIL, {
-              id: `${record.slug}.${record.id}`,
-            })}
-          >
-            {record.name}
-          </Link>
-        );
-      },
-    },
-    {
-      title: "Unit Price",
-      dataIndex: "price",
-      key: "price",
-      render: (price) => `${price.toLocaleString()} VND`,
-    },
-    {
-      title: "Quantity",
-      dataIndex: "quantity",
-      key: "quantity",
-      render: (quantity, record) => (
-        <InputNumber
-          min={1}
-          value={quantity}
-          onChange={(value) => handleChangeQuantity(record.productId, value)}
-        />
-      ),
-    },
-    {
-      title: "Total price",
-      dataIndex: "totalPrice",
-      key: "totalPrice",
-      render: (_, record) =>
-        `${(record.price * record.quantity).toLocaleString()} VND`,
-    },
-    {
-      title: "Action",
-      dataIndex: "action",
-      key: "action",
-      render: (_, record) => (
-        <Button
-          ghost
-          danger
-          onClick={() => handleDeleteCartItem(record.productId)}
-        >
-          Remove
-        </Button>
-      ),
-    },
-  ];
+  const renderCheckoutContent = useMemo(() => {
+    switch (step) {
+      case 1: {
+        return <Info setStep={setStep} />;
+      }
+      case 2: {
+        return <Payment setStep={setStep} />;
+      }
+      case 3: {
+        return <Success setStep={setStep} />;
+      }
+      case 0:
+      default: {
+        return <Cart setStep={setStep} />;
+      }
+    }
+  }, [step]);
 
   return (
     <S.Wrapper>
-      <Steps current={1}>
-        <Steps.Step title="Finished" description="This is a description." />
-        <Steps.Step
-          title="In Progress"
-          subTitle="Left 00:00:08"
-          description="This is a description."
-        />
-        <Steps.Step title="Waiting" description="This is a description." />
+      <Steps current={step}>
+        <Steps.Step title="Cart" />
+        <Steps.Step title="Info" />
+        <Steps.Step title="Payment" />
+        <Steps.Step title="Success" />
       </Steps>
-      <Table
-        columns={tableColumn}
-        dataSource={cartList}
-        rowKey="id"
-        pagination={false}
-      />
-      <h3>Total: {totalPrice.toLocaleString()} VND</h3>
-      <Button onClick={() => navigate(ROUTES.USER.PRODUCT_LIST)}>
-        Go to product list
-      </Button>
+
+      {renderCheckoutContent}
     </S.Wrapper>
   );
 };

@@ -145,12 +145,7 @@ function* updateProductSaga(action) {
     }
     // Images
     for (let i = 0; i < images.length; i++) {
-      if (images[i].id) {
-        yield axios.patch(`http://localhost:4000/images/${images[i].id}`, {
-          ...images[i],
-          productId: result.data.id,
-        });
-      } else {
+      if (!images[i].id) {
         yield axios.post("http://localhost:4000/images", {
           ...images[i],
           productId: result.data.id,

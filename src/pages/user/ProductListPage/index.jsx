@@ -10,7 +10,7 @@ import {
   Space,
   Tag,
 } from "antd";
-import { Link, generatePath } from "react-router-dom";
+import { Link, generatePath, useLocation } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 
 import {
@@ -28,20 +28,35 @@ const ProductListPage = () => {
     price: [0, 100000000],
   });
   const dispatch = useDispatch();
+  const { state } = useLocation();
+
   const { productList } = useSelector((state) => state.product);
   const { categoryList } = useSelector((state) => state.category);
 
   useEffect(() => {
-    dispatch(
-      getProductListAction({
-        params: {
-          page: 1,
-          limit: PRODUCT_LIST_LIMIT,
-        },
-      })
-    );
+    if (state?.categoryId?.length) {
+      dispatch(
+        getProductListAction({
+          params: {
+            categoryId: state.categoryId,
+            page: 1,
+            limit: PRODUCT_LIST_LIMIT,
+          },
+        })
+      );
+      setFilterParams({ ...filterParams, categoryId: state.categoryId });
+    } else {
+      dispatch(
+        getProductListAction({
+          params: {
+            page: 1,
+            limit: PRODUCT_LIST_LIMIT,
+          },
+        })
+      );
+    }
     dispatch(getCategoryListAction());
-  }, []);
+  }, [state]);
 
   const handleFilter = (key, value) => {
     setFilterParams({
@@ -141,6 +156,7 @@ const ProductListPage = () => {
       const categoryData = categoryList.data.find(
         (categoryItem) => categoryItem.id === filterItem
       );
+      if (!categoryData) return null;
       return (
         <Tag
           key={filterItem}

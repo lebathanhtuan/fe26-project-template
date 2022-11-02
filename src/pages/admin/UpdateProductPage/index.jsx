@@ -79,6 +79,7 @@ const UpdateProductPage = () => {
         name: imageFile.name,
         size: imageFile.size,
         type: imageFile.type,
+        thumbUrl: images[i].thumbUrl,
         originFileObj: imageFile,
       });
     }
@@ -87,6 +88,10 @@ const UpdateProductPage = () => {
 
   const handleUpdateProduct = async (values) => {
     const { options, images, ...productValues } = values;
+    console.log(
+      "🚀 ~ file: index.jsx ~ line 114 ~ handleUpdateProduct ~ images",
+      images
+    );
     const newImages = [];
     for (let i = 0; i < images.length; i++) {
       const imgBase64 = await convertImageToBase64(images[i].originFileObj);
@@ -98,6 +103,10 @@ const UpdateProductPage = () => {
         url: imgBase64,
       });
     }
+    console.log(
+      "🚀 ~ file: index.jsx ~ line 108 ~ handleUpdateProduct ~ newImages",
+      newImages
+    );
     dispatch(
       updateProductAction({
         id: id,
