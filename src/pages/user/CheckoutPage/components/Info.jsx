@@ -84,6 +84,7 @@ const Info = ({ setStep }) => {
                       wardCode: undefined,
                     });
                   }}
+                  disabled={!infoForm.getFieldValue("cityCode")}
                 >
                   {renderDistrictOptions}
                 </Select>
@@ -91,7 +92,9 @@ const Info = ({ setStep }) => {
             </Col>
             <Col span={8}>
               <Form.Item label="Ward" name="wardCode">
-                <Select>{renderWardListOptions}</Select>
+                <Select disabled={!infoForm.getFieldValue("districtCode")}>
+                  {renderWardListOptions}
+                </Select>
               </Form.Item>
             </Col>
           </Row>

@@ -1,7 +1,17 @@
 import { useEffect, useMemo, useState } from "react";
 import { useParams, Link, generatePath } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { Button, Radio, InputNumber } from "antd";
+import {
+  Row,
+  Col,
+  Space,
+  Breadcrumb,
+  Card,
+  Button,
+  Radio,
+  InputNumber,
+} from "antd";
+import { ShoppingCartOutlined } from "@ant-design/icons";
 import moment from "moment";
 
 import {
@@ -65,43 +75,109 @@ const ProductDetailPage = () => {
   const renderProductImages = useMemo(() => {
     if (!productDetail.data.images?.length) return null;
     return productDetail.data.images?.map((item) => {
-      return <img src={item.image} alt={item.name} width={300} height="auto" />;
+      return (
+        <img
+          key={item.id}
+          src={item.url}
+          alt={item.name}
+          width="100%"
+          height="auto"
+        />
+      );
     });
   }, [productDetail.data]);
 
   return (
-    <div>
-      <h3>{productDetail.data.name}</h3>
-      <p>{productDetail.data.category?.name}</p>
-      {renderProductImages}
-      <p>{productPrice?.toLocaleString()}</p>
-      {hasOptions && (
-        <Radio.Group
-          optionType="button"
-          buttonStyle="solid"
-          onChange={(e) => setSelectedOptionId(e.target.value)}
-          value={selectedOptionId}
-        >
-          {renderProductOptions}
-        </Radio.Group>
-      )}
-      <InputNumber
-        min={1}
-        onChange={(value) => setProductQuantity(value)}
-        value={productQuantity}
-      />
-      <Button type="primary" onClick={() => handleAddToCart()}>
-        Add to cart
-      </Button>
-      <S.ProductContent
-        dangerouslySetInnerHTML={{
-          __html: productDetail.data.content,
-        }}
-      />
+    <S.Wrapper>
+      <Breadcrumb style={{ marginBottom: 16 }}>
+        <Breadcrumb.Item>
+          <Link to={ROUTES.USER.HOME}>Home</Link>
+        </Breadcrumb.Item>
+        <Breadcrumb.Item>
+          <Link to={ROUTES.USER.PRODUCT_LIST}>Product List</Link>
+        </Breadcrumb.Item>
+        <Breadcrumb.Item>
+          <Link
+            to={ROUTES.USER.PRODUCT_LIST}
+            state={{ categoryId: [productDetail.data.category?.id] }}
+          >
+            {productDetail.data.category?.name}
+          </Link>
+        </Breadcrumb.Item>
+        <Breadcrumb.Item>{productDetail.data.name}</Breadcrumb.Item>
+      </Breadcrumb>
+      <Row gutter={[16, 16]}>
+        <Col span={24}>
+          <Card size="small" bordered={false}>
+            <Row gutter={[16, 16]}>
+              <Col span={10}>{renderProductImages}</Col>
+              <Col span={14}>
+                <h1>{productDetail.data.name}</h1>
+                <h3>{productDetail.data.category?.name}</h3>
+                <h2>{productPrice?.toLocaleString()} VND</h2>
+                {hasOptions && (
+                  <Row style={{ margin: "16px 0" }}>
+                    <Col flex="100px">
+                      <h3>Option</h3>
+                    </Col>
+                    <Col flex="auto">
+                      <Radio.Group
+                        optionType="button"
+                        buttonStyle="solid"
+                        onChange={(e) => setSelectedOptionId(e.target.value)}
+                        value={selectedOptionId}
+                      >
+                        {renderProductOptions}
+                      </Radio.Group>
+                    </Col>
+                  </Row>
+                )}
+                <Row style={{ margin: "16px 0" }}>
+                  <Col flex="100px">
+                    <h3>Quantity</h3>
+                  </Col>
+                  <Col flex="auto">
+                    <InputNumber
+                      min={1}
+                      onChange={(value) => setProductQuantity(value)}
+                      value={productQuantity}
+                    />
+                  </Col>
+                </Row>
+                <Space size={16}>
+                  <Button
+                    size="large"
+                    type="primary"
+                    icon={<ShoppingCartOutlined />}
+                    onClick={() => handleAddToCart()}
+                  >
+                    Add to cart
+                  </Button>
+                </Space>
+              </Col>
+            </Row>
+          </Card>
+        </Col>
+        <Col span={16}>
+          <Card size="small" bordered={false} title="Infomation">
+            <S.ProductContent
+              dangerouslySetInnerHTML={{
+                __html: productDetail.data.content,
+              }}
+            />
+          </Card>
+        </Col>
+        <Col span={8}>
+          <Card size="small" bordered={false} title="Specification"></Card>
+        </Col>
+        <Col span={16}>
+          <Card size="small" bordered={false} title="Review"></Card>
+        </Col>
+      </Row>
       <Link to={generatePath(ROUTES.USER.PRODUCT_DETAIL, { id: 2 })}>
         <Button>Sản phẩm tương tự</Button>
       </Link>
-    </div>
+    </S.Wrapper>
   );
 };
 

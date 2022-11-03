@@ -97,7 +97,7 @@ const CheckoutPage = ({ setStep }) => {
       <Table
         columns={tableColumn}
         dataSource={cartList}
-        rowKey="id"
+        rowKey="productId"
         pagination={false}
       />
       <h3>Total: {totalPrice.toLocaleString()} VND</h3>

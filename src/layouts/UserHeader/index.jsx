@@ -17,7 +17,7 @@ export default function Header(props) {
 
   return (
     <S.HeaderContainer>
-      <h2>Logo</h2>
+      <h2 onClick={() => navigate(ROUTES.USER.HOME)}>Logo</h2>
       <Space>
         <Badge count={cartList.length} size="small">
           <Button
