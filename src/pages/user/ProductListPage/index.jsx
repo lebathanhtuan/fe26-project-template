@@ -126,7 +126,7 @@ const ProductListPage = () => {
   const renderProductList = () => {
     return productList.data.map((item) => {
       return (
-        <Col span={6} key={item.id}>
+        <Col md={6} sm={8} xs={12} key={item.id}>
           <Link
             to={generatePath(ROUTES.USER.PRODUCT_DETAIL, {
               id: `${item.slug}.${item.id}`,
@@ -172,7 +172,7 @@ const ProductListPage = () => {
   return (
     <S.Wrapper>
       <Row gutter={[16, 16]}>
-        <Col span={6}>
+        <Col md={6} xs={24}>
           <Card size="small" title="Filter">
             <h4>Categories</h4>
             <Checkbox.Group
@@ -183,15 +183,15 @@ const ProductListPage = () => {
             </Checkbox.Group>
           </Card>
         </Col>
-        <Col span={18}>
+        <Col md={18} xs={24}>
           <Row gutter={[16, 16]} style={{ marginBottom: 16 }}>
-            <Col span={16}>
+            <Col sm={16} xs={24}>
               <Input
                 onChange={(e) => handleFilter("keyword", e.target.value)}
                 value={filterParams.keyword}
               />
             </Col>
-            <Col span={8}>
+            <Col sm={8} xs={24}>
               <Select style={{ width: "100%" }}></Select>
             </Col>
           </Row>

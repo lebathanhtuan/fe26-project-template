@@ -1,6 +1,12 @@
 import { createReducer } from "@reduxjs/toolkit";
 
-import { PRODUCT_ACTION, REQUEST, SUCCESS, FAIL } from "../constants";
+import {
+  PRODUCT_ACTION,
+  FAVORITE_ACTION,
+  REQUEST,
+  SUCCESS,
+  FAIL,
+} from "../constants";
 
 const initialState = {
   productList: {
@@ -196,6 +202,37 @@ const productReducer = createReducer(initialState, {
         data: {},
         loading: false,
         error: "",
+      },
+    };
+  },
+
+  [SUCCESS(FAVORITE_ACTION.FAVORITE_PRODUCT)]: (state, action) => {
+    const { data } = action.payload;
+    return {
+      ...state,
+      productDetail: {
+        ...state.productDetail,
+        data: {
+          ...state.productDetail.data,
+          favorites: [...state.productDetail.data.favorites, data],
+        },
+      },
+    };
+  },
+
+  [SUCCESS(FAVORITE_ACTION.UN_FAVORITE_PRODUCT)]: (state, action) => {
+    const { id } = action.payload;
+    const newFavorites = state.productDetail.data.favorites?.filter(
+      (item) => item.id !== id
+    );
+    return {
+      ...state,
+      productDetail: {
+        ...state.productDetail,
+        data: {
+          ...state.productDetail.data,
+          favorites: newFavorites,
+        },
       },
     };
   },

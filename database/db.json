@@ -216,6 +216,42 @@
       "id": 12
     }
   ],
+  "favorites": [
+    {
+      "id": 2,
+      "userId": 1,
+      "productId": 2
+    }
+  ],
+  "reviews": [
+    {
+      "rate": 5,
+      "comment": "Ahihi",
+      "userId": 2,
+      "productId": 1,
+      "createdAt": 1667479902015,
+      "updatedAt": 1667479902016,
+      "id": 2
+    },
+    {
+      "rate": 4,
+      "comment": "Ahoho",
+      "userId": 2,
+      "productId": 1,
+      "createdAt": 1667480128208,
+      "updatedAt": 1667480128208,
+      "id": 3
+    },
+    {
+      "rate": 3,
+      "comment": "Text\n",
+      "userId": 2,
+      "productId": 1,
+      "createdAt": 1667480306814,
+      "updatedAt": 1667480306814,
+      "id": 4
+    }
+  ],
   "images": [
     {
       "name": "modern-gold-background-free-vector.jpg",

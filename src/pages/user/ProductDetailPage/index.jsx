@@ -10,13 +10,25 @@ import {
   Button,
   Radio,
   InputNumber,
+  Form,
+  Input,
+  Rate,
+  notification,
 } from "antd";
-import { ShoppingCartOutlined } from "@ant-design/icons";
+import {
+  ShoppingCartOutlined,
+  HeartOutlined,
+  HeartFilled,
+} from "@ant-design/icons";
 import moment from "moment";
 
 import {
   getProductDetailAction,
   addToCartAction,
+  favoriteProductAction,
+  unFavoriteProductAction,
+  getReviewListAction,
+  postReviewAction,
 } from "../../../redux/actions";
 import { ROUTES } from "../../../constants/routes";
 
@@ -30,7 +42,9 @@ const ProductDetailPage = () => {
   const productId = parseInt(id.split(".")[1]);
   const dispatch = useDispatch();
 
+  const { userInfo } = useSelector((state) => state.user);
   const { productDetail } = useSelector((state) => state.product);
+  const { reviewList } = useSelector((state) => state.review);
 
   const hasOptions = !!productDetail.data.options?.length;
   const selectedOptionData = productDetail.data.options?.find(
@@ -39,8 +53,15 @@ const ProductDetailPage = () => {
   const bonusPrice = selectedOptionData ? selectedOptionData.bonusPrice : 0;
   const productPrice = (productDetail.data.price || 0) + bonusPrice;
 
+  const isLike = userInfo.data.id
+    ? productDetail.data.favorites?.some(
+        (item) => item.userId === userInfo.data.id
+      )
+    : false;
+
   useEffect(() => {
     dispatch(getProductDetailAction({ id: productId }));
+    dispatch(getReviewListAction({ productId: productId }));
   }, [productId]);
 
   useEffect(() => {
@@ -57,6 +78,43 @@ const ProductDetailPage = () => {
         quantity: productQuantity,
         price: productPrice,
         slug: productDetail.data.slug,
+      })
+    );
+  };
+
+  const handleToggleFavorite = () => {
+    if (userInfo.data.id) {
+      if (isLike) {
+        const favoriteData = productDetail.data.favorites?.find(
+          (item) => item.userId === userInfo.data.id
+        );
+        if (favoriteData) {
+          dispatch(
+            unFavoriteProductAction({
+              id: favoriteData.id,
+              productId: productDetail.data.id,
+            })
+          );
+        }
+      } else {
+        dispatch(
+          favoriteProductAction({
+            userId: userInfo.data.id,
+            productId: productDetail.data.id,
+          })
+        );
+      }
+    } else {
+      notification.warn({ message: "Bạn cần đăng nhập" });
+    }
+  };
+
+  const handlePostReview = (values) => {
+    dispatch(
+      postReviewAction({
+        ...values,
+        userId: userInfo.data.id,
+        productId: productDetail.data.id,
       })
     );
   };
@@ -87,6 +145,24 @@ const ProductDetailPage = () => {
     });
   }, [productDetail.data]);
 
+  const renderReviewList = useMemo(() => {
+    if (!reviewList.data.length) return null;
+    return reviewList.data?.map((item) => {
+      return (
+        <div>
+          <Space>
+            <h3>{item.user.fullName}</h3>
+            <h4>{moment(item.createdAt).fromNow()}</h4>
+          </Space>
+          <div>
+            <Rate value={item.rate} disabled style={{ fontSize: 12 }} />
+          </div>
+          <div>{item.comment}</div>
+        </div>
+      );
+    });
+  }, [reviewList.data]);
+
   return (
     <S.Wrapper>
       <Breadcrumb style={{ marginBottom: 16 }}>
@@ -107,11 +183,13 @@ const ProductDetailPage = () => {
         <Breadcrumb.Item>{productDetail.data.name}</Breadcrumb.Item>
       </Breadcrumb>
       <Row gutter={[16, 16]}>
-        <Col span={24}>
+        <Col xs={{ span: 24, order: 1 }}>
           <Card size="small" bordered={false}>
             <Row gutter={[16, 16]}>
-              <Col span={10}>{renderProductImages}</Col>
-              <Col span={14}>
+              <Col md={10} sm={24}>
+                {renderProductImages}
+              </Col>
+              <Col md={14} sm={24}>
                 <h1>{productDetail.data.name}</h1>
                 <h3>{productDetail.data.category?.name}</h3>
                 <h2>{productPrice?.toLocaleString()} VND</h2>
@@ -153,12 +231,20 @@ const ProductDetailPage = () => {
                   >
                     Add to cart
                   </Button>
+                  <Button
+                    size="large"
+                    danger={isLike}
+                    icon={isLike ? <HeartFilled /> : <HeartOutlined />}
+                    onClick={() => handleToggleFavorite()}
+                  >
+                    {productDetail.data?.favorites?.length || 0} liked
+                  </Button>
                 </Space>
               </Col>
             </Row>
           </Card>
         </Col>
-        <Col span={16}>
+        <Col md={{ span: 16, order: 2 }} xs={{ span: 24, order: 3 }}>
           <Card size="small" bordered={false} title="Infomation">
             <S.ProductContent
               dangerouslySetInnerHTML={{
@@ -167,11 +253,29 @@ const ProductDetailPage = () => {
             />
           </Card>
         </Col>
-        <Col span={8}>
+        <Col md={{ span: 8, order: 3 }} xs={{ span: 24, order: 1 }}>
           <Card size="small" bordered={false} title="Specification"></Card>
         </Col>
-        <Col span={16}>
-          <Card size="small" bordered={false} title="Review"></Card>
+        <Col md={{ span: 16, order: 4 }} xs={{ span: 24, order: 4 }}>
+          <Card size="small" bordered={false} title="Review">
+            {userInfo.data.id && (
+              <S.CustomForm
+                layout="vertical"
+                onFinish={(values) => handlePostReview(values)}
+              >
+                <Form.Item label="Rate" name="rate">
+                  <Rate />
+                </Form.Item>
+                <Form.Item label="Comment" name="comment">
+                  <Input.TextArea autoSize={{ maxRows: 6, minRows: 2 }} />
+                </Form.Item>
+                <Button type="primary" htmlType="submit" block>
+                  Submit
+                </Button>
+              </S.CustomForm>
+            )}
+            {renderReviewList}
+          </Card>
         </Col>
       </Row>
       <Link to={generatePath(ROUTES.USER.PRODUCT_DETAIL, { id: 2 })}>
