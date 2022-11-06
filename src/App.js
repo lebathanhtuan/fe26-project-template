@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, useLocation } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import jwtDecode from "jwt-decode";
 import "moment/locale/vi";
@@ -17,6 +17,7 @@ import ProductListPage from "./pages/user/ProductListPage";
 import ProductDetailPage from "./pages/user/ProductDetailPage";
 import CheckoutPage from "./pages/user/CheckoutPage";
 import AboutPage from "./pages/AboutPage";
+import ProfilePage from "./pages/user/ProfilePage";
 
 import LoginPage from "./pages/LoginPage";
 import RegisterPage from "./pages/RegisterPage";
@@ -29,6 +30,7 @@ import * as S from "./styles";
 
 function App() {
   const dispatch = useDispatch();
+  const { pathname } = useLocation();
 
   useEffect(() => {
     const accessToken = localStorage.getItem("accessToken");
@@ -37,6 +39,10 @@ function App() {
       dispatch(getUserInfoAction({ id: decodeInfo.sub }));
     }
   }, []);
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [pathname]);
 
   return (
     <div className={styles.globalContainer}>
@@ -68,6 +74,7 @@ function App() {
           />
           <Route path={ROUTES.USER.CHECKOUT} element={<CheckoutPage />} />
           <Route path={ROUTES.USER.ABOUT} element={<AboutPage />} />
+          <Route path={ROUTES.USER.PROFILE} element={<ProfilePage />} />
         </Route>
         <Route element={<LoginLayout />}>
           <Route path={ROUTES.LOGIN} element={<LoginPage />} />

@@ -7,6 +7,7 @@ export const ROUTES = {
     PRODUCT_DETAIL: "/products/:id",
     CHECKOUT: "/checkout",
     ABOUT: "/about",
+    PROFILE: "/profile",
   },
   ADMIN: {
     DASHBOARD: "/admin/dashboard",

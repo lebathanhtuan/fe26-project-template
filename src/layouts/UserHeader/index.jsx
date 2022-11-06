@@ -39,6 +39,9 @@ export default function Header(props) {
                     Go dashboard
                   </Menu.Item>
                 )}
+                <Menu.Item onClick={() => navigate(ROUTES.USER.PROFILE)}>
+                  My profile
+                </Menu.Item>
                 <Menu.Item onClick={() => dispatch(logoutAction())}>
                   Logout
                 </Menu.Item>

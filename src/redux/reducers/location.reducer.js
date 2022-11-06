@@ -20,7 +20,7 @@ const initialState = {
   },
 };
 
-const categoryReducer = createReducer(initialState, {
+const locationReducer = createReducer(initialState, {
   [REQUEST(LOCATION_ACTION.GET_CITY_LIST)]: (state, action) => {
     return {
       ...state,
@@ -121,4 +121,4 @@ const categoryReducer = createReducer(initialState, {
   },
 });
 
-export default categoryReducer;
+export default locationReducer;

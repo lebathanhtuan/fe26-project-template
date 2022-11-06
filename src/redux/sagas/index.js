@@ -6,6 +6,7 @@ import userSaga from "./user.saga";
 import locationSaga from "./location.saga";
 import favoriteSaga from "./favorite.saga";
 import reviewSaga from "./review.saga";
+import orderSaga from "./order.saga";
 
 export default function* rootSaga() {
   yield fork(productSaga);
@@ -14,4 +15,5 @@ export default function* rootSaga() {
   yield fork(locationSaga);
   yield fork(favoriteSaga);
   yield fork(reviewSaga);
+  yield fork(orderSaga);
 }

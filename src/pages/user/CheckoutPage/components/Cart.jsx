@@ -15,21 +15,23 @@ const CheckoutPage = ({ setStep }) => {
   const { cartList } = useSelector((state) => state.cart);
   const totalPrice = cartList
     .map((item) => item.price * item.quantity)
-    .reduce((total, price) => total + price);
+    .reduce((total, price) => total + price, 0);
 
-  const handleChangeQuantity = (productId, value) => {
+  const handleChangeQuantity = (productId, optionId, value) => {
     dispatch(
       updateCartItemAction({
         productId: productId,
+        optionId: optionId,
         quantity: value,
       })
     );
   };
 
-  const handleDeleteCartItem = (productId) => {
+  const handleDeleteCartItem = (productId, optionId) => {
     dispatch(
       deleteCartItemAction({
         productId: productId,
+        optionId: optionId,
       })
     );
   };
@@ -47,6 +49,7 @@ const CheckoutPage = ({ setStep }) => {
             })}
           >
             {record.name}
+            {record.optionId && ` - ${record.optionName}`}
           </Link>
         );
       },
@@ -65,7 +68,9 @@ const CheckoutPage = ({ setStep }) => {
         <InputNumber
           min={1}
           value={quantity}
-          onChange={(value) => handleChangeQuantity(record.productId, value)}
+          onChange={(value) =>
+            handleChangeQuantity(record.productId, record.optionId, value)
+          }
         />
       ),
     },
@@ -84,7 +89,9 @@ const CheckoutPage = ({ setStep }) => {
         <Button
           ghost
           danger
-          onClick={() => handleDeleteCartItem(record.productId)}
+          onClick={() =>
+            handleDeleteCartItem(record.productId, record.optionId)
+          }
         >
           Remove
         </Button>
@@ -92,14 +99,14 @@ const CheckoutPage = ({ setStep }) => {
     },
   ];
 
+  const tableData = cartList.map((item) => ({
+    ...item,
+    key: `${item.productId}${item.optionId && `-${item.optionId}`}`,
+  }));
+
   return (
     <>
-      <Table
-        columns={tableColumn}
-        dataSource={cartList}
-        rowKey="productId"
-        pagination={false}
-      />
+      <Table columns={tableColumn} dataSource={tableData} pagination={false} />
       <h3>Total: {totalPrice.toLocaleString()} VND</h3>
       <Row justify="space-between">
         <Button onClick={() => navigate(ROUTES.USER.PRODUCT_LIST)}>

@@ -252,6 +252,53 @@
       "id": 4
     }
   ],
+  "orders": [
+    {
+      "fullName": "Tuan",
+      "email": "tuan-admin@gmail.com",
+      "phoneNumber": "",
+      "address": "",
+      "cityId": 7224,
+      "cityName": "Thành phố Đà Nẵng",
+      "districtId": 7276,
+      "districtName": "Huyện Hòa Vang",
+      "wardId": 7279,
+      "wardName": "Xã Hòa Ninh",
+      "method": "cod",
+      "userId": 2,
+      "totalPrice": 25000000,
+      "status": "pending",
+      "createdAt": 1667620454201,
+      "updatedAt": 1667620454201,
+      "id": 1
+    }
+  ],
+  "orderProducts": [
+    {
+      "orderId": 1,
+      "productId": 1,
+      "productName": "iPhone 12",
+      "price": 13000000,
+      "quantity": 1,
+      "optionName": "128Gb",
+      "createdAt": 1667620454256,
+      "updatedAt": 1667620454256,
+      "id": 1
+    },
+    {
+      "orderId": 1,
+      "productId": 1,
+      "productName": "iPhone 12",
+      "price": 12000000,
+      "quantity": 1,
+      "optionName": "64Gb",
+      "createdAt": 1667620454311,
+      "updatedAt": 1667620454311,
+      "id": 2
+    }
+  ],
+  "guestOrders": [],
+  "guestOrderProducts": [],
   "images": [
     {
       "name": "modern-gold-background-free-vector.jpg",

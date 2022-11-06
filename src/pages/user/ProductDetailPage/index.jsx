@@ -73,6 +73,10 @@ const ProductDetailPage = () => {
   const handleAddToCart = () => {
     dispatch(
       addToCartAction({
+        ...(selectedOptionData && {
+          optionId: selectedOptionData.id,
+          optionName: selectedOptionData.name,
+        }),
         productId: productId,
         name: productDetail.data.name,
         quantity: productQuantity,
